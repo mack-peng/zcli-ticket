@@ -83,7 +83,17 @@ function handleConfigCommands(commandName: string, args: MinimistArgs, output: O
       const profile = rc.profiles[profileName];
       if (!profile)
         output.error(`Profile '${profileName}' not found`);
-      console.log(output.format({ active: rc.active, profile: profileName, ...profile }));
+      const masked = maskConfig({
+        subdomain: profile.subdomain || '',
+        email: profile.email || '',
+        mode: profile.oauthToken ? 'oauth' : profile.token ? 'api-token' : 'basic',
+        token: profile.token,
+        password: profile.password,
+        oauthToken: profile.oauthToken,
+        output: 'text',
+        raw: false,
+      });
+      console.log(output.format({ active: rc.active, profile: profileName, ...masked }));
       return true;
     }
     const config = loadConfig(args);

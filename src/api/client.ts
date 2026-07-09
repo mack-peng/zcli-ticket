@@ -38,10 +38,10 @@ export class ZendeskClient {
     const json: any = await response.json().catch(() => ({}));
 
     if (!response.ok) {
+      const errorObj = json.error;
       const message =
         json.description ||
-        json.error ||
-        json.message ||
+        (typeof errorObj === 'object' && errorObj !== null ? (errorObj.title || errorObj.message || JSON.stringify(errorObj)) : errorObj) ||
         `HTTP ${response.status}`;
       throw new Error(String(message));
     }
