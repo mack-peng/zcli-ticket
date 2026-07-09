@@ -1,8 +1,8 @@
 {
-  "global": "Usage: zendesk-cli <command> [args] [options]\n\n\nTickets & Attachments:\n  ticket-list                 list all tickets\n  ticket-list-recent          list recently updated tickets\n  ticket-show <id>            show a single ticket\n  ticket-show-many <ids>      show multiple tickets by id\n  ticket-create <subject> <body> create a new ticket\n  ticket-update <id>          update a ticket\n  ticket-update-many <ids>    update multiple tickets\n  ticket-delete <id>          delete a ticket\n  ticket-delete-many <ids>    delete multiple tickets\n  ticket-merge <id> <target-id> merge tickets into a target ticket\n  ticket-related <id>         list related ticket information\n  attachment-show <id>        show attachment metadata\n  attachment-upload <file>    upload a file attachment\n  attachment-delete <id>      delete an attachment\n  ticket-field-list           list all ticket fields\n  ticket-field-show <id>      show a ticket field\n  ticket-form-list            list all ticket forms\n  ticket-form-show <id>       show a ticket form\n  tag-list                    list all tags\n  macro-list                  list all macros\n  macro-show <id>             show a macro\n  macro-apply <ticket-id> <macro-id> apply a macro to a ticket\n  suspended-list              list suspended tickets\n  suspended-recover <id>      recover a suspended ticket\n  suspended-delete <id>       delete a suspended ticket\n  incremental-tickets <start-time> incrementally export tickets\n\nComments:\n  comment-list <ticket-id>    list comments for a ticket\n  comment-create <ticket-id> <body> add a comment to a ticket\n  comment-update <ticket-id> <comment-id> <body> update a comment (make private only)\n  comment-redact <ticket-id> <comment-id> <text> redact a comment's text from ticket\n\nUsers:\n  user-list                   list all users\n  user-show <id>              show a single user\n  user-me                     show the currently authenticated user\n  user-show-many <ids>        show multiple users by id\n  user-create <name> <email>  create a new user\n  user-update <id>            update a user\n  user-delete <id>            delete a user\n  user-search                 search users by external_id, email, or query\n  identity-list <user-id>     list identities for a user\n  incremental-users <start-time> incrementally export users\n\nOrganizations:\n  org-list                    list all organizations\n  org-show <id>               show a single organization\n  org-create <name>           create an organization\n  org-update <id>             update an organization\n  org-delete <id>             delete an organization\n  org-search <external-id>    search organizations by external_id\n  org-membership-list         list organization memberships\n  org-membership-create <user-id> <org-id> create an organization membership\n  org-membership-delete <id>  delete an organization membership\n  incremental-orgs <start-time> incrementally export organizations\n\nGroups:\n  group-list                  list all groups\n  group-show <id>             show a single group\n  group-create <name>         create a group\n  group-update <id>           update a group\n  group-delete <id>           delete a group\n  group-membership-list       list group memberships\n  group-membership-create <user-id> <group-id> create a group membership\n  group-membership-delete <id> delete a group membership\n\nSearch:\n  search <query>              search tickets, users, or organizations (zendesk search syntax)\n\nViews:\n  view-list                   list all views\n  view-show <id>              show a view\n  view-execute <id>           execute a view (get tickets)\n  view-count <id>             count tickets in a view\n  view-count-many <ids>       count tickets in multiple views\n\nConfiguration:\n  config-show                 show current configuration\n  config-set <key> <value>    set a configuration value\n  config-path                 show configuration file path\n  config-list                 list all profiles\n  config-use <name>           switch active profile\n  config-new <name>           create a new profile\n\nGlobal options:\n  --help [command]            print help\n  --json                      output response as JSON\n  --raw                       output only the result value\n  --version                   print version\n  -s, --subdomain <subdomain> Zendesk subdomain\n  -e, --email <email>         Zendesk agent email\n  --token <token>             API token\n  --password <password>       password for basic auth\n  --oauth-token <token>       OAuth access token",
+  "global": "Usage: zendesk-cli <command> [args] [options]\n\n\nTickets & Attachments:\n  ticket-list                 list all tickets\n  ticket-list-recent          list recently updated tickets\n  ticket-show <id>            show a single ticket\n  ticket-show-many <ids>      show multiple tickets by id\n  ticket-create <subject> <body> create a new ticket\n  ticket-update <id>          update a ticket\n  ticket-update-many <ids>    update multiple tickets\n  ticket-delete <id>          delete a ticket\n  ticket-delete-many <ids>    delete multiple tickets\n  ticket-merge <id> <target-id> merge tickets into a target ticket\n  ticket-related <id>         list related ticket information\n  attachment-show <id>        show attachment metadata\n  attachment-upload <file>    upload a file attachment\n  attachment-delete <id>      delete an attachment\n  ticket-field-list           list all ticket fields\n  ticket-field-show <id>      show a ticket field\n  ticket-form-list            list all ticket forms\n  ticket-form-show <id>       show a ticket form\n  tag-list                    list all tags\n  macro-list                  list all macros\n  macro-show <id>             show a macro\n  macro-apply <ticket-id> <macro-id> apply a macro to a ticket\n  suspended-list              list suspended tickets\n  suspended-recover <id>      recover a suspended ticket\n  suspended-delete <id>       delete a suspended ticket\n  incremental-tickets <start-time> incrementally export tickets\n\nComments:\n  comment-list <ticket-id>    list comments for a ticket\n  comment-create <ticket-id> <body> add a comment to a ticket\n  comment-update <ticket-id> <comment-id> <body> update a comment (make private only)\n  comment-redact <ticket-id> <comment-id> <text> redact a comment's text from ticket\n\nUsers:\n  user-list                   list all users\n  user-show <id>              show a single user\n  user-me                     show the currently authenticated user\n  user-show-many <ids>        show multiple users by id\n  user-create <name> <email>  create a new user\n  user-update <id>            update a user\n  user-delete <id>            delete a user\n  user-search                 search users by external_id, email, or query\n  identity-list <user-id>     list identities for a user\n  incremental-users <start-time> incrementally export users\n\nOrganizations:\n  org-list                    list all organizations\n  org-show <id>               show a single organization\n  org-create <name>           create an organization\n  org-update <id>             update an organization\n  org-delete <id>             delete an organization\n  org-search <external-id>    search organizations by external_id\n  org-membership-list         list organization memberships\n  org-membership-create <user-id> <org-id> create an organization membership\n  org-membership-delete <id>  delete an organization membership\n  incremental-orgs <start-time> incrementally export organizations\n\nGroups:\n  group-list                  list all groups\n  group-show <id>             show a single group\n  group-create <name>         create a group\n  group-update <id>           update a group\n  group-delete <id>           delete a group\n  group-membership-list       list group memberships\n  group-membership-create <user-id> <group-id> create a group membership\n  group-membership-delete <id> delete a group membership\n\nSearch:\n  search <query>              search tickets, users, or organizations (zendesk search syntax)\n\nViews:\n  view-list                   list all views\n  view-show <id>              show a view\n  view-execute <id>           execute a view (get tickets)\n  view-count <id>             count tickets in a view\n  view-count-many <ids>       count tickets in multiple views\n\nConfiguration:\n  config-show                 show current configuration\n  config-set <key> <value>    set a configuration value\n  config-path                 show configuration file path\n  config-list                 list all profiles\n  config-use <name>           switch active profile\n  config-new <name>           create a new profile\n\nGlobal options:\n  --help [command]            print help\n  --json                      output response as JSON\n  --raw                       output only the result value\n  --version                   print version\n  -p, --profile <name>        use named profile (or ZENDESK_PROFILE env)\n  -s, --subdomain <subdomain> Zendesk subdomain\n  -e, --email <email>         Zendesk agent email\n  --token <token>             API token\n  --password <password>       password for basic auth\n  --oauth-token <token>       OAuth access token",
   "commands": {
     "ticket-list": {
-      "help": "zendesk-cli ticket-list \n\nList all tickets\n\nOptions:\n  --sort-by                   \n  --sort-order                \n  --status                    \n  --per-page                  tickets per page (max 100)",
+      "help": "zendesk-cli ticket-list \n\nList all tickets\n\nOptions:\n  --sort-by                   sort by field\n  --sort-order                sort direction (asc, desc)\n  --status                    filter by ticket status\n  --per-page                  tickets per page (max 100)\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {
         "sort-by": "string",
         "sort-order": "string",
@@ -13,27 +13,27 @@
       "list": true
     },
     "ticket-list-recent": {
-      "help": "zendesk-cli ticket-list-recent \n\nList recently updated tickets\n",
+      "help": "zendesk-cli ticket-list-recent \n\nList recently updated tickets\n\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [],
       "list": true
     },
     "ticket-show": {
-      "help": "zendesk-cli ticket-show <id>\n\nShow a single ticket\n\nArguments:\n  <id>                        ticket id",
+      "help": "zendesk-cli ticket-show <id>\n\nShow a single ticket\n\nArguments:\n  <id>                        ticket id\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [
         "id"
       ]
     },
     "ticket-show-many": {
-      "help": "zendesk-cli ticket-show-many <ids>\n\nShow multiple tickets by ID\n\nArguments:\n  <ids>                       comma-separated ticket ids",
+      "help": "zendesk-cli ticket-show-many <ids>\n\nShow multiple tickets by ID\n\nArguments:\n  <ids>                       comma-separated ticket ids\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [
         "ids"
       ]
     },
     "ticket-create": {
-      "help": "zendesk-cli ticket-create <subject> <body>\n\nCreate a new ticket\n\nArguments:\n  <subject>                   ticket subject\n  <body>                      comment body\nOptions:\n  --priority                  \n  --type                      \n  --tags                      comma-separated tags\n  --assignee-id               \n  --group-id                  \n  --requester-id              \n  --status                    ",
+      "help": "zendesk-cli ticket-create <subject> <body>\n\nCreate a new ticket\n\nArguments:\n  <subject>                   ticket subject\n  <body>                      comment body\nOptions:\n  --priority                  ticket priority\n  --type                      ticket type\n  --tags                      comma-separated tags\n  --assignee-id               assignee user id\n  --group-id                  group id\n  --requester-id              requester user id\n  --status                    ticket status\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {
         "priority": "string",
         "type": "string",
@@ -49,7 +49,7 @@
       ]
     },
     "ticket-update": {
-      "help": "zendesk-cli ticket-update <id>\n\nUpdate a ticket\n\nArguments:\n  <id>                        ticket id\nOptions:\n  --subject                   \n  --priority                  \n  --status                    \n  --assignee-id               \n  --group-id                  \n  --tags                      \n  --comment                   add a public comment\n  --private-comment           add an internal note",
+      "help": "zendesk-cli ticket-update <id>\n\nUpdate a ticket\n\nArguments:\n  <id>                        ticket id\nOptions:\n  --subject                   new subject\n  --priority                  ticket priority\n  --status                    ticket status\n  --assignee-id               assignee user id\n  --group-id                  group id\n  --tags                      comma-separated tags\n  --comment                   add a public comment\n  --private-comment           add an internal note\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {
         "subject": "string",
         "priority": "string",
@@ -65,7 +65,7 @@
       ]
     },
     "ticket-update-many": {
-      "help": "zendesk-cli ticket-update-many <ids>\n\nUpdate multiple tickets\n\nArguments:\n  <ids>                       comma-separated ticket ids\nOptions:\n  --status                    \n  --assignee-id               \n  --group-id                  ",
+      "help": "zendesk-cli ticket-update-many <ids>\n\nUpdate multiple tickets\n\nArguments:\n  <ids>                       comma-separated ticket ids\nOptions:\n  --status                    \n  --assignee-id               \n  --group-id                  \n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {
         "status": "string",
         "assignee-id": "string",
@@ -76,21 +76,21 @@
       ]
     },
     "ticket-delete": {
-      "help": "zendesk-cli ticket-delete <id>\n\nDelete a ticket\n\nArguments:\n  <id>                        ticket id",
+      "help": "zendesk-cli ticket-delete <id>\n\nDelete a ticket\n\nArguments:\n  <id>                        ticket id\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [
         "id"
       ]
     },
     "ticket-delete-many": {
-      "help": "zendesk-cli ticket-delete-many <ids>\n\nDelete multiple tickets\n\nArguments:\n  <ids>                       comma-separated ticket ids",
+      "help": "zendesk-cli ticket-delete-many <ids>\n\nDelete multiple tickets\n\nArguments:\n  <ids>                       comma-separated ticket ids\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [
         "ids"
       ]
     },
     "ticket-merge": {
-      "help": "zendesk-cli ticket-merge <id> <target-id>\n\nMerge tickets into a target ticket\n\nArguments:\n  <id>                        source ticket id\n  <target-id>                 target ticket id",
+      "help": "zendesk-cli ticket-merge <id> <target-id>\n\nMerge tickets into a target ticket\n\nArguments:\n  <id>                        source ticket id\n  <target-id>                 target ticket id\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [
         "id",
@@ -98,21 +98,21 @@
       ]
     },
     "ticket-related": {
-      "help": "zendesk-cli ticket-related <id>\n\nList related ticket information\n\nArguments:\n  <id>                        ticket id",
+      "help": "zendesk-cli ticket-related <id>\n\nList related ticket information\n\nArguments:\n  <id>                        ticket id\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [
         "id"
       ]
     },
     "attachment-show": {
-      "help": "zendesk-cli attachment-show <id>\n\nShow attachment metadata\n\nArguments:\n  <id>                        attachment id",
+      "help": "zendesk-cli attachment-show <id>\n\nShow attachment metadata\n\nArguments:\n  <id>                        attachment id\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [
         "id"
       ]
     },
     "attachment-upload": {
-      "help": "zendesk-cli attachment-upload <file>\n\nUpload a file attachment\n\nArguments:\n  <file>                      path to file to upload\nOptions:\n  --filename                  override filename\n  --token                     return only upload token",
+      "help": "zendesk-cli attachment-upload <file>\n\nUpload a file attachment\n\nArguments:\n  <file>                      path to file to upload\nOptions:\n  --filename                  override filename\n  --token                     return only upload token\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {
         "filename": "string",
         "token": "boolean"
@@ -122,14 +122,14 @@
       ]
     },
     "attachment-delete": {
-      "help": "zendesk-cli attachment-delete <id>\n\nDelete an attachment\n\nArguments:\n  <id>                        attachment id",
+      "help": "zendesk-cli attachment-delete <id>\n\nDelete an attachment\n\nArguments:\n  <id>                        attachment id\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [
         "id"
       ]
     },
     "comment-list": {
-      "help": "zendesk-cli comment-list <ticket-id>\n\nList comments for a ticket\n\nArguments:\n  <ticket-id>                 ticket id",
+      "help": "zendesk-cli comment-list <ticket-id>\n\nList comments for a ticket\n\nArguments:\n  <ticket-id>                 ticket id\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [
         "ticket-id"
@@ -137,7 +137,7 @@
       "list": true
     },
     "comment-create": {
-      "help": "zendesk-cli comment-create <ticket-id> <body>\n\nAdd a comment to a ticket\n\nArguments:\n  <ticket-id>                 ticket id\n  <body>                      comment body\nOptions:\n  --public                    make comment public (default)\n  --private                   make comment internal note\n  --upload-tokens             comma-separated attachment upload tokens",
+      "help": "zendesk-cli comment-create <ticket-id> <body>\n\nAdd a comment to a ticket\n\nArguments:\n  <ticket-id>                 ticket id\n  <body>                      comment body\nOptions:\n  --public                    make comment public (default)\n  --private                   make comment internal note\n  --upload-tokens             comma-separated attachment upload tokens\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {
         "public": "boolean",
         "private": "boolean",
@@ -149,7 +149,7 @@
       ]
     },
     "comment-update": {
-      "help": "zendesk-cli comment-update <ticket-id> <comment-id> <body>\n\nUpdate a comment (make private only)\n\nArguments:\n  <ticket-id>                 ticket id\n  <comment-id>                comment id\n  <body>                      new comment body",
+      "help": "zendesk-cli comment-update <ticket-id> <comment-id> <body>\n\nUpdate a comment (make private only)\n\nArguments:\n  <ticket-id>                 ticket id\n  <comment-id>                comment id\n  <body>                      new comment body\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [
         "ticket-id",
@@ -158,7 +158,7 @@
       ]
     },
     "comment-redact": {
-      "help": "zendesk-cli comment-redact <ticket-id> <comment-id> <text>\n\nRedact a comment's text from ticket\n\nArguments:\n  <ticket-id>                 ticket id\n  <comment-id>                comment id\n  <text>                      text to replace redacted content with",
+      "help": "zendesk-cli comment-redact <ticket-id> <comment-id> <text>\n\nRedact a comment's text from ticket\n\nArguments:\n  <ticket-id>                 ticket id\n  <comment-id>                comment id\n  <text>                      text to replace redacted content with\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [
         "ticket-id",
@@ -167,7 +167,7 @@
       ]
     },
     "user-list": {
-      "help": "zendesk-cli user-list \n\nList all users\n\nOptions:\n  --role                      \n  --per-page                  ",
+      "help": "zendesk-cli user-list \n\nList all users\n\nOptions:\n  --role                      user role\n  --per-page                  users per page\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {
         "role": "string",
         "per-page": "string"
@@ -176,26 +176,26 @@
       "list": true
     },
     "user-show": {
-      "help": "zendesk-cli user-show <id>\n\nShow a single user\n\nArguments:\n  <id>                        user id or \"me\"",
+      "help": "zendesk-cli user-show <id>\n\nShow a single user\n\nArguments:\n  <id>                        user id or \"me\"\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [
         "id"
       ]
     },
     "user-me": {
-      "help": "zendesk-cli user-me \n\nShow the currently authenticated user\n",
+      "help": "zendesk-cli user-me \n\nShow the currently authenticated user\n\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": []
     },
     "user-show-many": {
-      "help": "zendesk-cli user-show-many <ids>\n\nShow multiple users by ID\n\nArguments:\n  <ids>                       comma-separated user ids",
+      "help": "zendesk-cli user-show-many <ids>\n\nShow multiple users by ID\n\nArguments:\n  <ids>                       comma-separated user ids\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [
         "ids"
       ]
     },
     "user-create": {
-      "help": "zendesk-cli user-create <name> <email>\n\nCreate a new user\n\nArguments:\n  <name>                      user name\n  <email>                     user email\nOptions:\n  --role                      \n  --verified                  \n  --organization-id           \n  --phone                     \n  --locale                    ",
+      "help": "zendesk-cli user-create <name> <email>\n\nCreate a new user\n\nArguments:\n  <name>                      user name\n  <email>                     user email\nOptions:\n  --role                      user role\n  --verified                  mark as verified\n  --organization-id           organization id\n  --phone                     phone number\n  --locale                    locale, e.g. en-us\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {
         "role": "string",
         "verified": "boolean",
@@ -209,7 +209,7 @@
       ]
     },
     "user-update": {
-      "help": "zendesk-cli user-update <id>\n\nUpdate a user\n\nArguments:\n  <id>                        user id\nOptions:\n  --name                      \n  --email                     \n  --role                      \n  --organization-id           \n  --phone                     \n  --locale                    \n  --verified                  ",
+      "help": "zendesk-cli user-update <id>\n\nUpdate a user\n\nArguments:\n  <id>                        user id\nOptions:\n  --name                      display name\n  --email                     email address\n  --role                      user role\n  --organization-id           organization id\n  --phone                     phone number\n  --locale                    locale, e.g. en-us\n  --verified                  mark as verified\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {
         "name": "string",
         "email": "string",
@@ -224,14 +224,14 @@
       ]
     },
     "user-delete": {
-      "help": "zendesk-cli user-delete <id>\n\nDelete a user\n\nArguments:\n  <id>                        user id",
+      "help": "zendesk-cli user-delete <id>\n\nDelete a user\n\nArguments:\n  <id>                        user id\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [
         "id"
       ]
     },
     "user-search": {
-      "help": "zendesk-cli user-search \n\nSearch users by external_id, email, or query\n\nOptions:\n  --query                     search query\n  --external-id               \n  --email                     \n  --per-page                  ",
+      "help": "zendesk-cli user-search \n\nSearch users by external_id, email, or query\n\nOptions:\n  --query                     search query\n  --external-id               \n  --email                     \n  --per-page                  \n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {
         "query": "string",
         "external-id": "string",
@@ -242,14 +242,14 @@
       "list": true
     },
     "identity-list": {
-      "help": "zendesk-cli identity-list <user-id>\n\nList identities for a user\n\nArguments:\n  <user-id>                   user id",
+      "help": "zendesk-cli identity-list <user-id>\n\nList identities for a user\n\nArguments:\n  <user-id>                   user id\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [
         "user-id"
       ]
     },
     "incremental-users": {
-      "help": "zendesk-cli incremental-users <start-time>\n\nIncrementally export users\n\nArguments:\n  <start-time>                unix timestamp start",
+      "help": "zendesk-cli incremental-users <start-time>\n\nIncrementally export users\n\nArguments:\n  <start-time>                unix timestamp start\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [
         "start-time"
@@ -257,7 +257,7 @@
       "list": true
     },
     "org-list": {
-      "help": "zendesk-cli org-list \n\nList all organizations\n\nOptions:\n  --per-page                  ",
+      "help": "zendesk-cli org-list \n\nList all organizations\n\nOptions:\n  --per-page                  \n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {
         "per-page": "string"
       },
@@ -265,14 +265,14 @@
       "list": true
     },
     "org-show": {
-      "help": "zendesk-cli org-show <id>\n\nShow a single organization\n\nArguments:\n  <id>                        organization id",
+      "help": "zendesk-cli org-show <id>\n\nShow a single organization\n\nArguments:\n  <id>                        organization id\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [
         "id"
       ]
     },
     "org-create": {
-      "help": "zendesk-cli org-create <name>\n\nCreate an organization\n\nArguments:\n  <name>                      organization name\nOptions:\n  --external-id               \n  --group-id                  \n  --tags                      comma-separated tags\n  --notes                     ",
+      "help": "zendesk-cli org-create <name>\n\nCreate an organization\n\nArguments:\n  <name>                      organization name\nOptions:\n  --external-id               \n  --group-id                  \n  --tags                      comma-separated tags\n  --notes                     \n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {
         "external-id": "string",
         "group-id": "string",
@@ -284,7 +284,7 @@
       ]
     },
     "org-update": {
-      "help": "zendesk-cli org-update <id>\n\nUpdate an organization\n\nArguments:\n  <id>                        organization id\nOptions:\n  --name                      \n  --external-id               \n  --tags                      \n  --notes                     ",
+      "help": "zendesk-cli org-update <id>\n\nUpdate an organization\n\nArguments:\n  <id>                        organization id\nOptions:\n  --name                      \n  --external-id               \n  --tags                      \n  --notes                     \n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {
         "name": "string",
         "external-id": "string",
@@ -296,21 +296,21 @@
       ]
     },
     "org-delete": {
-      "help": "zendesk-cli org-delete <id>\n\nDelete an organization\n\nArguments:\n  <id>                        organization id",
+      "help": "zendesk-cli org-delete <id>\n\nDelete an organization\n\nArguments:\n  <id>                        organization id\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [
         "id"
       ]
     },
     "org-search": {
-      "help": "zendesk-cli org-search <external-id>\n\nSearch organizations by external_id\n\nArguments:\n  <external-id>               external organization id",
+      "help": "zendesk-cli org-search <external-id>\n\nSearch organizations by external_id\n\nArguments:\n  <external-id>               external organization id\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [
         "external-id"
       ]
     },
     "org-membership-list": {
-      "help": "zendesk-cli org-membership-list \n\nList organization memberships\n\nOptions:\n  --user-id                   \n  --org-id                    ",
+      "help": "zendesk-cli org-membership-list \n\nList organization memberships\n\nOptions:\n  --user-id                   \n  --org-id                    \n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {
         "user-id": "string",
         "org-id": "string"
@@ -319,7 +319,7 @@
       "list": true
     },
     "org-membership-create": {
-      "help": "zendesk-cli org-membership-create <user-id> <org-id>\n\nCreate an organization membership\n\nArguments:\n  <user-id>                   user id\n  <org-id>                    organization id",
+      "help": "zendesk-cli org-membership-create <user-id> <org-id>\n\nCreate an organization membership\n\nArguments:\n  <user-id>                   user id\n  <org-id>                    organization id\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [
         "user-id",
@@ -327,14 +327,14 @@
       ]
     },
     "org-membership-delete": {
-      "help": "zendesk-cli org-membership-delete <id>\n\nDelete an organization membership\n\nArguments:\n  <id>                        membership id",
+      "help": "zendesk-cli org-membership-delete <id>\n\nDelete an organization membership\n\nArguments:\n  <id>                        membership id\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [
         "id"
       ]
     },
     "incremental-orgs": {
-      "help": "zendesk-cli incremental-orgs <start-time>\n\nIncrementally export organizations\n\nArguments:\n  <start-time>                unix timestamp start",
+      "help": "zendesk-cli incremental-orgs <start-time>\n\nIncrementally export organizations\n\nArguments:\n  <start-time>                unix timestamp start\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [
         "start-time"
@@ -342,27 +342,27 @@
       "list": true
     },
     "group-list": {
-      "help": "zendesk-cli group-list \n\nList all groups\n",
+      "help": "zendesk-cli group-list \n\nList all groups\n\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [],
       "list": true
     },
     "group-show": {
-      "help": "zendesk-cli group-show <id>\n\nShow a single group\n\nArguments:\n  <id>                        group id",
+      "help": "zendesk-cli group-show <id>\n\nShow a single group\n\nArguments:\n  <id>                        group id\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [
         "id"
       ]
     },
     "group-create": {
-      "help": "zendesk-cli group-create <name>\n\nCreate a group\n\nArguments:\n  <name>                      group name",
+      "help": "zendesk-cli group-create <name>\n\nCreate a group\n\nArguments:\n  <name>                      group name\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [
         "name"
       ]
     },
     "group-update": {
-      "help": "zendesk-cli group-update <id>\n\nUpdate a group\n\nArguments:\n  <id>                        group id\nOptions:\n  --name                      ",
+      "help": "zendesk-cli group-update <id>\n\nUpdate a group\n\nArguments:\n  <id>                        group id\nOptions:\n  --name                      \n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {
         "name": "string"
       },
@@ -371,14 +371,14 @@
       ]
     },
     "group-delete": {
-      "help": "zendesk-cli group-delete <id>\n\nDelete a group\n\nArguments:\n  <id>                        group id",
+      "help": "zendesk-cli group-delete <id>\n\nDelete a group\n\nArguments:\n  <id>                        group id\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [
         "id"
       ]
     },
     "group-membership-list": {
-      "help": "zendesk-cli group-membership-list \n\nList group memberships\n\nOptions:\n  --user-id                   \n  --group-id                  ",
+      "help": "zendesk-cli group-membership-list \n\nList group memberships\n\nOptions:\n  --user-id                   \n  --group-id                  \n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {
         "user-id": "string",
         "group-id": "string"
@@ -387,7 +387,7 @@
       "list": true
     },
     "group-membership-create": {
-      "help": "zendesk-cli group-membership-create <user-id> <group-id>\n\nCreate a group membership\n\nArguments:\n  <user-id>                   user id\n  <group-id>                  group id",
+      "help": "zendesk-cli group-membership-create <user-id> <group-id>\n\nCreate a group membership\n\nArguments:\n  <user-id>                   user id\n  <group-id>                  group id\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [
         "user-id",
@@ -395,14 +395,14 @@
       ]
     },
     "group-membership-delete": {
-      "help": "zendesk-cli group-membership-delete <id>\n\nDelete a group membership\n\nArguments:\n  <id>                        membership id",
+      "help": "zendesk-cli group-membership-delete <id>\n\nDelete a group membership\n\nArguments:\n  <id>                        membership id\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [
         "id"
       ]
     },
     "search": {
-      "help": "zendesk-cli search <query>\n\nSearch tickets, users, or organizations (Zendesk search syntax)\n\nArguments:\n  <query>                     search query\nOptions:\n  --type                      result type\n  --sort-by                   \n  --sort-order                \n  --per-page                  ",
+      "help": "zendesk-cli search <query>\n\nSearch tickets, users, or organizations (Zendesk search syntax)\n\nArguments:\n  <query>                     search query\nOptions:\n  --type                      result type\n  --sort-by                   sort by field\n  --sort-order                sort direction\n  --per-page                  results per page\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {
         "type": "string",
         "sort-by": "string",
@@ -415,19 +415,19 @@
       "list": true
     },
     "view-list": {
-      "help": "zendesk-cli view-list \n\nList all views\n",
+      "help": "zendesk-cli view-list \n\nList all views\n\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": []
     },
     "view-show": {
-      "help": "zendesk-cli view-show <id>\n\nShow a view\n\nArguments:\n  <id>                        view id",
+      "help": "zendesk-cli view-show <id>\n\nShow a view\n\nArguments:\n  <id>                        view id\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [
         "id"
       ]
     },
     "view-execute": {
-      "help": "zendesk-cli view-execute <id>\n\nExecute a view (get tickets)\n\nArguments:\n  <id>                        view id\nOptions:\n  --sort-by                   \n  --sort-order                \n  --per-page                  ",
+      "help": "zendesk-cli view-execute <id>\n\nExecute a view (get tickets)\n\nArguments:\n  <id>                        view id\nOptions:\n  --sort-by                   sort by field\n  --sort-order                sort direction\n  --per-page                  tickets per page\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {
         "sort-by": "string",
         "sort-order": "string",
@@ -439,62 +439,62 @@
       "list": true
     },
     "view-count": {
-      "help": "zendesk-cli view-count <id>\n\nCount tickets in a view\n\nArguments:\n  <id>                        view id",
+      "help": "zendesk-cli view-count <id>\n\nCount tickets in a view\n\nArguments:\n  <id>                        view id\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [
         "id"
       ]
     },
     "view-count-many": {
-      "help": "zendesk-cli view-count-many <ids>\n\nCount tickets in multiple views\n\nArguments:\n  <ids>                       comma-separated view ids",
+      "help": "zendesk-cli view-count-many <ids>\n\nCount tickets in multiple views\n\nArguments:\n  <ids>                       comma-separated view ids\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [
         "ids"
       ]
     },
     "ticket-field-list": {
-      "help": "zendesk-cli ticket-field-list \n\nList all ticket fields\n",
+      "help": "zendesk-cli ticket-field-list \n\nList all ticket fields\n\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": []
     },
     "ticket-field-show": {
-      "help": "zendesk-cli ticket-field-show <id>\n\nShow a ticket field\n\nArguments:\n  <id>                        field id",
+      "help": "zendesk-cli ticket-field-show <id>\n\nShow a ticket field\n\nArguments:\n  <id>                        field id\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [
         "id"
       ]
     },
     "ticket-form-list": {
-      "help": "zendesk-cli ticket-form-list \n\nList all ticket forms\n",
+      "help": "zendesk-cli ticket-form-list \n\nList all ticket forms\n\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": []
     },
     "ticket-form-show": {
-      "help": "zendesk-cli ticket-form-show <id>\n\nShow a ticket form\n\nArguments:\n  <id>                        form id",
+      "help": "zendesk-cli ticket-form-show <id>\n\nShow a ticket form\n\nArguments:\n  <id>                        form id\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [
         "id"
       ]
     },
     "tag-list": {
-      "help": "zendesk-cli tag-list \n\nList all tags\n",
+      "help": "zendesk-cli tag-list \n\nList all tags\n\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": []
     },
     "macro-list": {
-      "help": "zendesk-cli macro-list \n\nList all macros\n",
+      "help": "zendesk-cli macro-list \n\nList all macros\n\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": []
     },
     "macro-show": {
-      "help": "zendesk-cli macro-show <id>\n\nShow a macro\n\nArguments:\n  <id>                        macro id",
+      "help": "zendesk-cli macro-show <id>\n\nShow a macro\n\nArguments:\n  <id>                        macro id\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [
         "id"
       ]
     },
     "macro-apply": {
-      "help": "zendesk-cli macro-apply <ticket-id> <macro-id>\n\nApply a macro to a ticket\n\nArguments:\n  <ticket-id>                 ticket id\n  <macro-id>                  macro id",
+      "help": "zendesk-cli macro-apply <ticket-id> <macro-id>\n\nApply a macro to a ticket\n\nArguments:\n  <ticket-id>                 ticket id\n  <macro-id>                  macro id\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [
         "ticket-id",
@@ -502,27 +502,27 @@
       ]
     },
     "suspended-list": {
-      "help": "zendesk-cli suspended-list \n\nList suspended tickets\n",
+      "help": "zendesk-cli suspended-list \n\nList suspended tickets\n\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [],
       "list": true
     },
     "suspended-recover": {
-      "help": "zendesk-cli suspended-recover <id>\n\nRecover a suspended ticket\n\nArguments:\n  <id>                        suspended ticket id",
+      "help": "zendesk-cli suspended-recover <id>\n\nRecover a suspended ticket\n\nArguments:\n  <id>                        suspended ticket id\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [
         "id"
       ]
     },
     "suspended-delete": {
-      "help": "zendesk-cli suspended-delete <id>\n\nDelete a suspended ticket\n\nArguments:\n  <id>                        suspended ticket id",
+      "help": "zendesk-cli suspended-delete <id>\n\nDelete a suspended ticket\n\nArguments:\n  <id>                        suspended ticket id\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [
         "id"
       ]
     },
     "incremental-tickets": {
-      "help": "zendesk-cli incremental-tickets <start-time>\n\nIncrementally export tickets\n\nArguments:\n  <start-time>                unix timestamp start",
+      "help": "zendesk-cli incremental-tickets <start-time>\n\nIncrementally export tickets\n\nArguments:\n  <start-time>                unix timestamp start\n\nGlobal options:\n  --json                      output as JSON\n  --profile, -p <name>        use named profile\n  -s, --subdomain <s>         zendesk subdomain\n  -e, --email <e>             agent email\n  --token <t>                 api token",
       "flags": {},
       "args": [
         "start-time"

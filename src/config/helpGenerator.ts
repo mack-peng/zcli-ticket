@@ -44,6 +44,16 @@ function generateCommandHelp(command: AnyCommandSchema) {
     }
   }
 
+  if (command.category !== 'config') {
+    lines.push('');
+    lines.push('Global options:');
+    lines.push(formatWithGap('  --json', 'output as JSON'));
+    lines.push(formatWithGap('  --profile, -p <name>', 'use named profile'));
+    lines.push(formatWithGap('  -s, --subdomain <s>', 'zendesk subdomain'));
+    lines.push(formatWithGap('  -e, --email <e>', 'agent email'));
+    lines.push(formatWithGap('  --token <t>', 'api token'));
+  }
+
   return lines.join('\n');
 }
 
@@ -84,6 +94,7 @@ export function generateHelp() {
   lines.push(formatWithGap('  --json', 'output response as JSON'));
   lines.push(formatWithGap('  --raw', 'output only the result value'));
   lines.push(formatWithGap('  --version', 'print version'));
+  lines.push(formatWithGap('  -p, --profile <name>', 'use named profile (or ZENDESK_PROFILE env)'));
   lines.push(formatWithGap('  -s, --subdomain <subdomain>', 'Zendesk subdomain'));
   lines.push(formatWithGap('  -e, --email <email>', 'Zendesk agent email'));
   lines.push(formatWithGap('  --token <token>', 'API token'));
