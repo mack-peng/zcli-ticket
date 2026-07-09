@@ -49,6 +49,14 @@ zcli-ticket config-set password mypassword
 
 # Or OAuth
 zcli-ticket config-set oauth-token eyJ...
+
+# Multi-profile support
+zcli-ticket config-new staging
+zcli-ticket -p staging config-set subdomain stagingco
+zcli-ticket -p staging config-set email admin@staging.co
+zcli-ticket -p staging config-set token xyz789
+zcli-ticket config-use staging          # Switch active profile
+zcli-ticket config-list                 # List all profiles
 ```
 
 > Config is stored at `~/.zendeskrc`. Override per-command with `-s`, `-e`, `--token`:
@@ -60,6 +68,7 @@ zcli-ticket config-set oauth-token eyJ...
 zcli-ticket ticket-list --status open
 zcli-ticket ticket-show 12345
 zcli-ticket user-me
+zcli-ticket ticket-thread 12345         # Ticket + all comments
 ```
 
 ---
@@ -72,7 +81,7 @@ zcli-ticket user-me
 | Basic Auth | `password` | `{email}:{password}` base64 |
 | OAuth | `oauth-token` | `Bearer {token}` |
 
-Config file (`~/.zendeskrc`) stores credentials. Use `config-show` to verify without exposing secrets.
+Config file (`~/.zendeskrc`) stores credentials per profile. Use `config-show` to verify without exposing secrets.
 
 ---
 
@@ -89,6 +98,12 @@ zcli-ticket config-show
 
 # Show config file location
 zcli-ticket config-path
+
+# Profile management
+zcli-ticket config-new myprofile                    # Create profile
+zcli-ticket -p myprofile config-set subdomain co    # Set per profile
+zcli-ticket config-use myprofile                    # Switch to it
+zcli-ticket config-list                             # List all profiles
 ```
 
 Priority: CLI flags > Environment variables > Config file
@@ -99,7 +114,10 @@ Priority: CLI flags > Environment variables > Config file
 --token           ZENDESK_TOKEN
 --password        ZENDESK_PASSWORD
 --oauth-token     ZENDESK_OAUTH_TOKEN
+-p, --profile     ZENDESK_PROFILE
 ```
+
+Subdomain auto-resolves: `mycorp` → `mycorp.zendesk.com`, full domains like `mycorp.zendesk.de` or `support.mycorp.com` work directly.
 
 ---
 
@@ -109,11 +127,13 @@ Priority: CLI flags > Environment variables > Config file
 |------|--------|----------|
 | (default) | Human-readable tables / formatted JSON | Terminal viewing |
 | `--json` | Machine-readable JSON | Scripts, `jq` pipes, AI agent consumption |
+| `--raw` | Raw data without formatting | Direct consumption by other tools |
 
 ```bash
 zcli-ticket ticket-list --status open          # Table output
 zcli-ticket --json ticket-list --status open   # JSON output
 zcli-ticket --json ticket-list | jq '.[].id'   # Pipe to jq
+zcli-ticket --raw ticket-show 12345            # Raw data
 ```
 
 ---
@@ -129,8 +149,10 @@ zcli-ticket ticket-list --sort-by updated_at --sort-order desc
 zcli-ticket ticket-list-recent                           # Recently updated
 zcli-ticket ticket-show 12345                            # Single ticket
 zcli-ticket ticket-show-many 1,2,3                       # Multiple tickets
+zcli-ticket ticket-thread 12345                          # Ticket + all comments
 zcli-ticket ticket-create "Subject" "Description"        # Create
 zcli-ticket ticket-create "Subject" "Body" --priority urgent --tags urgent,printer
+zcli-ticket ticket-create-many tickets.json              # Bulk create from JSON file
 zcli-ticket ticket-update 12345 --status solved          # Update
 zcli-ticket ticket-update 12345 --assignee-id 789        # Reassign
 zcli-ticket ticket-update 12345 --comment "Fixed"        # Add comment
@@ -145,11 +167,12 @@ zcli-ticket ticket-related 12345                         # Related info
 ### Comments
 
 ```bash
-zcli-ticket comment-list --ticket-id 12345
-zcli-ticket comment-create --ticket-id 12345 "Have you tried restarting?"
-zcli-ticket comment-create --ticket-id 12345 "Internal note" --private
+zcli-ticket comment-list 26520363
+zcli-ticket comment-create 26520363 "Have you tried restarting?"
+zcli-ticket comment-create 26520363 "Internal note" --private
 zcli-ticket comment-update --ticket-id 12345 --comment-id 456 "Updated text"
 zcli-ticket comment-redact --ticket-id 12345 --comment-id 456 "[REDACTED]"
+zcli-ticket comment-delete --ticket-id 12345 --comment-id 456
 ```
 
 ### Users
@@ -163,12 +186,17 @@ zcli-ticket user-show me                                 # Alias for user-me
 zcli-ticket user-show-many 1,2,3                         # Multiple users
 zcli-ticket user-create "John Doe" "john@example.com"    # Create
 zcli-ticket user-create "Agent" "agent@corp.com" --role agent --verified
+zcli-ticket user-create-many users.json                  # Bulk create from JSON file
 zcli-ticket user-update 67890 --name "Jane"              # Update
 zcli-ticket user-update 67890 --role admin               # Promote
+zcli-ticket user-update-many 1,2,3 --role agent          # Bulk update
 zcli-ticket user-delete 67890                            # Delete
+zcli-ticket user-delete-many 1,2,3                       # Bulk delete
+zcli-ticket user-merge --source-id 100 --target-id 200   # Merge users
 zcli-ticket user-search --query "jane"                   # Search by name
 zcli-ticket user-search --email "jane@corp.com"          # Search by email
 zcli-ticket user-search --external-id "ext123"           # Search by external ID
+zcli-ticket user-autocomplete "John"                     # Name autocomplete
 zcli-ticket identity-list --user-id 67890                # User identities
 ```
 
@@ -271,6 +299,10 @@ zcli-ticket incremental-orgs 1710000000                  # Orgs since timestamp
 --raw               Output raw result without formatting
 --help [command]    Show help for a command or global
 --version           Show version
+-p, --profile       Use named config profile
+-s, --subdomain     Zendesk subdomain (or full domain)
+-e, --email         Zendesk agent email
+--token             API token
 ```
 
 ---
@@ -279,7 +311,7 @@ zcli-ticket incremental-orgs 1710000000                  # Orgs since timestamp
 
 ```bash
 npm install
-npm run build       # Generate help.json + compile TypeScript
+npm run build       # tsc + generate help.json → dist/
 npm test            # Run 43 unit tests
 npx tsc --noEmit    # Type check only
 ```

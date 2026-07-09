@@ -6,7 +6,7 @@ You are an AI agent (Claude Code, Codex, Cursor, etc.). This guide is written fo
 
 If a human pasted this to you, follow the instructions below:
 
-> Install and configure `zcli-ticket` using the guide at `docs/guide/installation.md`. First check `~/.zendeskrc` if it exists, then ask me for my Zendesk subdomain, email, and API token. Verify with `zcli-ticket ticket-list --status open` or `zcli-ticket user-me`.
+> Install and configure `zcli-ticket` using the guide at `docs/guide/installation.md`. First check `~/.zendeskrc` if it exists, then ask me for my Zendesk subdomain, email, and API token. If multiple Zendesk instances are needed, use profiles (`zcli-ticket config-new <name>`). Verify with `zcli-ticket user-me` or `zcli-ticket ticket-thread <id>`.
 
 ---
 
@@ -84,7 +84,18 @@ zcli-ticket config-set email agent@company.com
 zcli-ticket config-set token abc123xyz
 ```
 
-Config is stored at `~/.zendeskrc`. One Zendesk instance at a time. To switch without touching config, override per command:
+Config is stored at `~/.zendeskrc`. Multi-instance? Use profiles:
+
+```bash
+zcli-ticket config-new myprofile
+zcli-ticket -p myprofile config-set subdomain mycompany
+zcli-ticket -p myprofile config-set email agent@corp.com
+zcli-ticket -p myprofile config-set token abc123
+zcli-ticket config-list          # See all profiles
+zcli-ticket config-use myprofile # Switch active
+```
+
+To override per command without switching profiles:
 
 ```bash
 zcli-ticket -s mycompany -e agent@corp.com --token xyz ticket-list
@@ -127,6 +138,7 @@ zcli-ticket ticket-list --status open             # Filter by status
 zcli-ticket ticket-list --status open --sort-by priority
 zcli-ticket ticket-list-recent                    # Recently updated
 zcli-ticket ticket-show 12345                     # View a ticket
+zcli-ticket ticket-thread 12345                   # Ticket + all comments (one command)
 zcli-ticket ticket-create "Subject" "Body"        # Create a ticket
 zcli-ticket ticket-create "Urgent" "Details" --priority urgent --tags urgent
 zcli-ticket ticket-update 12345 --status solved   # Update status
@@ -177,12 +189,20 @@ zcli-ticket ticket-delete-many 1,2,3
 zcli-ticket user-show-many 100,200,300
 ```
 
-### JSON Mode (for scripts/pipes)
+### JSON & Raw Mode (for scripts/pipes)
 
 ```bash
 zcli-ticket --json ticket-list --status open | jq '.[].id'
 zcli-ticket --json ticket-show 12345 | jq '.status'
 zcli-ticket --json user-me | jq '.email'
+zcli-ticket --raw ticket-show 12345              # Raw data, no formatting
+```
+
+### Multi-Profile
+
+```bash
+zcli-ticket config-list                          # See all profiles
+zcli-ticket -p myprofile ticket-list             # Use a specific profile
 ```
 
 ---
@@ -219,7 +239,7 @@ Then run any command without `-s`, `-e`, or `--token`.
 → Rate limited. The CLI auto-retries after the delay Zendesk specifies. If persistent, slow down.
 
 **ENOTFOUND / fetch failed**
-→ Wrong subdomain. Check `config-show` and verify the subdomain resolves to `*.zendesk.com`.
+→ Wrong subdomain or network issue. The CLI resolves `mycorp` → `mycorp.zendesk.com`, or you can pass a full domain like `mycorp.zendesk.de`.
 
 **Command not found**
 → Global install didn't register. Re-run `npm install -g zcli-ticket`.
