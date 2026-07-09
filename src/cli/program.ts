@@ -107,7 +107,8 @@ async function executeApiCommand(
 ) {
   try {
     const config = loadConfig(args);
-    const parsed = parseCommand(command, args as Record<string, string> & { _: string[] });
+    const cmdArgs = stripGlobalOptions(args);
+    const parsed = parseCommand(command, cmdArgs as Record<string, string> & { _: string[] });
     const auth = createAuthProvider({
       mode: config.mode,
       email: config.email,
@@ -154,6 +155,15 @@ async function dispatchRequest(
   if (isBodyMethod)
     apiOptions.body = transformed;
   return client.request(method, pathStr, apiOptions);
+}
+
+function stripGlobalOptions(args: MinimistArgs): MinimistArgs {
+  const result: MinimistArgs = { _: args._ };
+  for (const key of Object.keys(args)) {
+    if (key === '_' || globalOptions.includes(key)) continue;
+    result[key] = args[key];
+  }
+  return result;
 }
 
 function extractQueryParams(args: MinimistArgs, cmdEntry: any): Record<string, any> {
