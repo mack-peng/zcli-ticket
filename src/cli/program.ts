@@ -105,7 +105,7 @@ function handleConfigCommands(commandName: string, args: MinimistArgs, output: O
     const key = args._[1];
     const value = args._[2];
     if (!key || !value)
-      output.error('Usage: zendesk-cli config-set <key> <value>');
+      output.error('Usage: zcli-ticket config-set <key> <value>');
     const profileName = args.profile as string || undefined;
     const result = writeRcConfig(key, value, profileName);
     console.log(output.format(result));
@@ -132,7 +132,7 @@ function handleConfigCommands(commandName: string, args: MinimistArgs, output: O
   if (commandName === 'config-use') {
     const name = args._[1];
     if (!name)
-      output.error('Usage: zendesk-cli config-use <name>');
+      output.error('Usage: zcli-ticket config-use <name>');
     setActiveProfile(name);
     console.log(output.format({ active: name }));
     return true;
@@ -141,7 +141,7 @@ function handleConfigCommands(commandName: string, args: MinimistArgs, output: O
   if (commandName === 'config-new') {
     const name = args._[1];
     if (!name)
-      output.error('Usage: zendesk-cli config-new <name>');
+      output.error('Usage: zcli-ticket config-new <name>');
     createProfile(name);
     console.log(output.format({ created: name }));
     return true;

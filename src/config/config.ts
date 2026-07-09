@@ -57,7 +57,7 @@ function resolveProfile(args: MinimistArgs): ProfileConfig {
   const rc = readRcFile();
   const profile = rc.profiles[name];
   if (!profile)
-    throw new Error(`Profile '${name}' not found. Run: zendesk-cli config-new ${name}`);
+    throw new Error(`Profile '${name}' not found. Run: zcli-ticket config-new ${name}`);
   return profile;
 }
 
@@ -81,7 +81,7 @@ export function loadConfig(args: MinimistArgs): Config {
   if (!subdomain || !email)
     throw new Error(
       'Missing required config. Set ZENDESK_SUBDOMAIN and ZENDESK_EMAIL env vars, ' +
-      'or use --subdomain and --email flags, or run: zendesk-cli config-set <key> <value>'
+      'or use --subdomain and --email flags, or run: zcli-ticket config-set <key> <value>'
     );
 
   return {

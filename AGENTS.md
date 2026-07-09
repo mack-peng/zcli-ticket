@@ -2,7 +2,7 @@
 
 ## Project
 
-`zendesk-cli` — CLI for Zendesk Ticketing API. Entrypoint: `bin/zendesk-cli.js` → `require('../dist/index')`.  
+`zcli-ticket` — CLI for Zendesk Ticketing API. Entrypoint: `bin/zcli-ticket.js` → `require('../dist/index')`.  
 Build: `npm run build` (= `tsx scripts/generate-help.ts && tsc` — generates `help.json` from Zod schemas, then compiles).  
 Test: `npm test` (= `tsx --test tests/*.test.ts` — Node.js built-in test runner, 43 tests).  
 Dependencies: `zod`. Dev: `typescript`, `@types/node`, `tsx`.
@@ -26,7 +26,7 @@ src/
 │   ├── config.ts           # Config loader (CLI flags → env → ~/.zendeskrc)
 │   └── helpGenerator.ts    # Build-time: Zod schemas → help.json
 └── bin/
-    └── zendesk-cli.js      # npm bin entry
+    └── zcli-ticket.js      # npm bin entry
 ```
 
 ## Key Patterns
@@ -52,7 +52,7 @@ src/
 
 ## What Makes This Different from Commander-Based CLIs
 
-| | Commander (dify-cli) | Zod-Driven (zendesk-cli) |
+| | Commander (dify-cli) | Zod-Driven (zcli-ticket) |
 |---|---|---|
 | Command definition | `program.command().option().action()` | `declareCommand({ name, args, options, api, ... })` |
 | Validation | Runtime, per-handler | Build-time types + runtime Zod strict() |

@@ -23,7 +23,7 @@ function commandArgsText(args: CommandArg[]) {
 function generateCommandHelp(command: AnyCommandSchema) {
   const args = commandArgs(command);
   const lines: string[] = [
-    `zendesk-cli ${command.name} ${commandArgsText(args)}`,
+    `zcli-ticket ${command.name} ${commandArgsText(args)}`,
     '',
     command.description,
     '',
@@ -70,7 +70,7 @@ const categories: { name: Category; title: string }[] = [
 
 export function generateHelp() {
   const lines: string[] = [];
-  lines.push('Usage: zendesk-cli <command> [args] [options]');
+  lines.push('Usage: zcli-ticket <command> [args] [options]');
   lines.push('');
 
   const commandsByCategory = new Map<string, AnyCommandSchema[]>();

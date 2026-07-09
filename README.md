@@ -1,4 +1,4 @@
-# zendesk-cli
+# zcli-ticket
 
 A command-line interface for the Zendesk Ticketing API. Built for both humans and AI agents.
 
@@ -9,8 +9,8 @@ A command-line interface for the Zendesk Ticketing API. Built for both humans an
 Copy and paste this prompt to your LLM agent (Claude Code, Cursor, Codex, etc.):
 
 ```text
-Install and configure zendesk-cli by following the instructions here:
-https://raw.githubusercontent.com/mack-peng/zendesk-cli/main/docs/guide/installation.md
+Install and configure zcli-ticket by following the instructions here:
+https://raw.githubusercontent.com/mack-peng/zcli-ticket/main/docs/guide/installation.md
 ```
 
 ### For LLM Agents
@@ -18,7 +18,7 @@ https://raw.githubusercontent.com/mack-peng/zendesk-cli/main/docs/guide/installa
 Fetch the installation guide and follow it:
 
 ```bash
-curl -s https://raw.githubusercontent.com/mack-peng/zendesk-cli/main/docs/guide/installation.md
+curl -s https://raw.githubusercontent.com/mack-peng/zcli-ticket/main/docs/guide/installation.md
 ```
 
 ---
@@ -28,10 +28,10 @@ curl -s https://raw.githubusercontent.com/mack-peng/zendesk-cli/main/docs/guide/
 ### Install
 
 ```bash
-npm install -g zendesk-cli
+npm install -g zcli-ticket
 
 # Or run without installing:
-# npx zendesk-cli ticket-list
+# npx zcli-ticket ticket-list
 ```
 
 ### 1. Configure Authentication
@@ -40,26 +40,26 @@ Three auth modes. Most users use API tokens:
 
 ```bash
 # API token (recommended)
-zendesk-cli config-set subdomain mycompany
-zendesk-cli config-set email agent@company.com
-zendesk-cli config-set token abc123xyz
+zcli-ticket config-set subdomain mycompany
+zcli-ticket config-set email agent@company.com
+zcli-ticket config-set token abc123xyz
 
 # Or basic auth
-zendesk-cli config-set password mypassword
+zcli-ticket config-set password mypassword
 
 # Or OAuth
-zendesk-cli config-set oauth-token eyJ...
+zcli-ticket config-set oauth-token eyJ...
 ```
 
 > Config is stored at `~/.zendeskrc`. Override per-command with `-s`, `-e`, `--token`:
-> `zendesk-cli ticket-list --subdomain mycompany --email me@corp.com --token abc`
+> `zcli-ticket ticket-list --subdomain mycompany --email me@corp.com --token abc`
 
 ### 2. Try It
 
 ```bash
-zendesk-cli ticket-list --status open
-zendesk-cli ticket-show 12345
-zendesk-cli user-me
+zcli-ticket ticket-list --status open
+zcli-ticket ticket-show 12345
+zcli-ticket user-me
 ```
 
 ---
@@ -80,15 +80,15 @@ Config file (`~/.zendeskrc`) stores credentials. Use `config-show` to verify wit
 
 ```bash
 # Set values
-zendesk-cli config-set subdomain mycompany
-zendesk-cli config-set email agent@company.com
-zendesk-cli config-set token abc123xyz
+zcli-ticket config-set subdomain mycompany
+zcli-ticket config-set email agent@company.com
+zcli-ticket config-set token abc123xyz
 
 # Show current config (secrets masked)
-zendesk-cli config-show
+zcli-ticket config-show
 
 # Show config file location
-zendesk-cli config-path
+zcli-ticket config-path
 ```
 
 Priority: CLI flags > Environment variables > Config file
@@ -111,9 +111,9 @@ Priority: CLI flags > Environment variables > Config file
 | `--json` | Machine-readable JSON | Scripts, `jq` pipes, AI agent consumption |
 
 ```bash
-zendesk-cli ticket-list --status open          # Table output
-zendesk-cli --json ticket-list --status open   # JSON output
-zendesk-cli --json ticket-list | jq '.[].id'   # Pipe to jq
+zcli-ticket ticket-list --status open          # Table output
+zcli-ticket --json ticket-list --status open   # JSON output
+zcli-ticket --json ticket-list | jq '.[].id'   # Pipe to jq
 ```
 
 ---
@@ -123,143 +123,143 @@ zendesk-cli --json ticket-list | jq '.[].id'   # Pipe to jq
 ### Tickets
 
 ```bash
-zendesk-cli ticket-list                                  # All tickets
-zendesk-cli ticket-list --status open                    # Filter by status
-zendesk-cli ticket-list --sort-by updated_at --sort-order desc
-zendesk-cli ticket-list-recent                           # Recently updated
-zendesk-cli ticket-show 12345                            # Single ticket
-zendesk-cli ticket-show-many 1,2,3                       # Multiple tickets
-zendesk-cli ticket-create "Subject" "Description"        # Create
-zendesk-cli ticket-create "Subject" "Body" --priority urgent --tags urgent,printer
-zendesk-cli ticket-update 12345 --status solved          # Update
-zendesk-cli ticket-update 12345 --assignee-id 789        # Reassign
-zendesk-cli ticket-update 12345 --comment "Fixed"        # Add comment
-zendesk-cli ticket-update 12345 --private-comment "Note" # Internal note
-zendesk-cli ticket-update-many 1,2,3 --status closed     # Bulk update
-zendesk-cli ticket-delete 12345                          # Delete
-zendesk-cli ticket-delete-many 1,2,3                     # Bulk delete
-zendesk-cli ticket-merge 12345 --target-id 67890         # Merge
-zendesk-cli ticket-related 12345                         # Related info
+zcli-ticket ticket-list                                  # All tickets
+zcli-ticket ticket-list --status open                    # Filter by status
+zcli-ticket ticket-list --sort-by updated_at --sort-order desc
+zcli-ticket ticket-list-recent                           # Recently updated
+zcli-ticket ticket-show 12345                            # Single ticket
+zcli-ticket ticket-show-many 1,2,3                       # Multiple tickets
+zcli-ticket ticket-create "Subject" "Description"        # Create
+zcli-ticket ticket-create "Subject" "Body" --priority urgent --tags urgent,printer
+zcli-ticket ticket-update 12345 --status solved          # Update
+zcli-ticket ticket-update 12345 --assignee-id 789        # Reassign
+zcli-ticket ticket-update 12345 --comment "Fixed"        # Add comment
+zcli-ticket ticket-update 12345 --private-comment "Note" # Internal note
+zcli-ticket ticket-update-many 1,2,3 --status closed     # Bulk update
+zcli-ticket ticket-delete 12345                          # Delete
+zcli-ticket ticket-delete-many 1,2,3                     # Bulk delete
+zcli-ticket ticket-merge 12345 --target-id 67890         # Merge
+zcli-ticket ticket-related 12345                         # Related info
 ```
 
 ### Comments
 
 ```bash
-zendesk-cli comment-list --ticket-id 12345
-zendesk-cli comment-create --ticket-id 12345 "Have you tried restarting?"
-zendesk-cli comment-create --ticket-id 12345 "Internal note" --private
-zendesk-cli comment-update --ticket-id 12345 --comment-id 456 "Updated text"
-zendesk-cli comment-redact --ticket-id 12345 --comment-id 456 "[REDACTED]"
+zcli-ticket comment-list --ticket-id 12345
+zcli-ticket comment-create --ticket-id 12345 "Have you tried restarting?"
+zcli-ticket comment-create --ticket-id 12345 "Internal note" --private
+zcli-ticket comment-update --ticket-id 12345 --comment-id 456 "Updated text"
+zcli-ticket comment-redact --ticket-id 12345 --comment-id 456 "[REDACTED]"
 ```
 
 ### Users
 
 ```bash
-zendesk-cli user-list                                    # All users
-zendesk-cli user-list --role agent                       # Filter by role
-zendesk-cli user-me                                      # Current user
-zendesk-cli user-show 67890                              # Single user
-zendesk-cli user-show me                                 # Alias for user-me
-zendesk-cli user-show-many 1,2,3                         # Multiple users
-zendesk-cli user-create "John Doe" "john@example.com"    # Create
-zendesk-cli user-create "Agent" "agent@corp.com" --role agent --verified
-zendesk-cli user-update 67890 --name "Jane"              # Update
-zendesk-cli user-update 67890 --role admin               # Promote
-zendesk-cli user-delete 67890                            # Delete
-zendesk-cli user-search --query "jane"                   # Search by name
-zendesk-cli user-search --email "jane@corp.com"          # Search by email
-zendesk-cli user-search --external-id "ext123"           # Search by external ID
-zendesk-cli identity-list --user-id 67890                # User identities
+zcli-ticket user-list                                    # All users
+zcli-ticket user-list --role agent                       # Filter by role
+zcli-ticket user-me                                      # Current user
+zcli-ticket user-show 67890                              # Single user
+zcli-ticket user-show me                                 # Alias for user-me
+zcli-ticket user-show-many 1,2,3                         # Multiple users
+zcli-ticket user-create "John Doe" "john@example.com"    # Create
+zcli-ticket user-create "Agent" "agent@corp.com" --role agent --verified
+zcli-ticket user-update 67890 --name "Jane"              # Update
+zcli-ticket user-update 67890 --role admin               # Promote
+zcli-ticket user-delete 67890                            # Delete
+zcli-ticket user-search --query "jane"                   # Search by name
+zcli-ticket user-search --email "jane@corp.com"          # Search by email
+zcli-ticket user-search --external-id "ext123"           # Search by external ID
+zcli-ticket identity-list --user-id 67890                # User identities
 ```
 
 ### Organizations
 
 ```bash
-zendesk-cli org-list
-zendesk-cli org-show 123
-zendesk-cli org-create "Acme Corp" --external-id "acme-001" --tags "enterprise,partner"
-zendesk-cli org-update 123 --name "Acme Inc"
-zendesk-cli org-delete 123
-zendesk-cli org-search --external-id "acme-001"
-zendesk-cli org-membership-list --org-id 123
-zendesk-cli org-membership-create --user-id 456 --org-id 123
-zendesk-cli org-membership-delete 789
+zcli-ticket org-list
+zcli-ticket org-show 123
+zcli-ticket org-create "Acme Corp" --external-id "acme-001" --tags "enterprise,partner"
+zcli-ticket org-update 123 --name "Acme Inc"
+zcli-ticket org-delete 123
+zcli-ticket org-search --external-id "acme-001"
+zcli-ticket org-membership-list --org-id 123
+zcli-ticket org-membership-create --user-id 456 --org-id 123
+zcli-ticket org-membership-delete 789
 ```
 
 ### Groups
 
 ```bash
-zendesk-cli group-list
-zendesk-cli group-show 42
-zendesk-cli group-create "Support Team"
-zendesk-cli group-update 42 --name "Support Tier 2"
-zendesk-cli group-delete 42
-zendesk-cli group-membership-list --group-id 42
-zendesk-cli group-membership-create --user-id 100 --group-id 42
-zendesk-cli group-membership-delete 200
+zcli-ticket group-list
+zcli-ticket group-show 42
+zcli-ticket group-create "Support Team"
+zcli-ticket group-update 42 --name "Support Tier 2"
+zcli-ticket group-delete 42
+zcli-ticket group-membership-list --group-id 42
+zcli-ticket group-membership-create --user-id 100 --group-id 42
+zcli-ticket group-membership-delete 200
 ```
 
 ### Search
 
 ```bash
-zendesk-cli search "status:open"                         # Ticket search
-zendesk-cli search "type:user jane"                      # User search
-zendesk-cli search "type:organization acme"              # Org search
-zendesk-cli search "status:open priority:urgent" --sort-by created_at --sort-order desc
+zcli-ticket search "status:open"                         # Ticket search
+zcli-ticket search "type:user jane"                      # User search
+zcli-ticket search "type:organization acme"              # Org search
+zcli-ticket search "status:open priority:urgent" --sort-by created_at --sort-order desc
 ```
 
 ### Views
 
 ```bash
-zendesk-cli view-list
-zendesk-cli view-show 123
-zendesk-cli view-execute 123                             # Get tickets in view
-zendesk-cli view-execute 123 --sort-by created_at
-zendesk-cli view-count 123                               # Ticket count
-zendesk-cli view-count-many 1,2,3                        # Multiple views
+zcli-ticket view-list
+zcli-ticket view-show 123
+zcli-ticket view-execute 123                             # Get tickets in view
+zcli-ticket view-execute 123 --sort-by created_at
+zcli-ticket view-count 123                               # Ticket count
+zcli-ticket view-count-many 1,2,3                        # Multiple views
 ```
 
 ### Attachments
 
 ```bash
-zendesk-cli attachment-show 123456
-zendesk-cli attachment-upload ./screenshot.png
-zendesk-cli attachment-upload ./report.pdf --filename "Q4-Report.pdf"
-zendesk-cli attachment-delete 123456
+zcli-ticket attachment-show 123456
+zcli-ticket attachment-upload ./screenshot.png
+zcli-ticket attachment-upload ./report.pdf --filename "Q4-Report.pdf"
+zcli-ticket attachment-delete 123456
 ```
 
 ### Ticket Fields & Forms
 
 ```bash
-zendesk-cli ticket-field-list
-zendesk-cli ticket-field-show 12345
-zendesk-cli ticket-form-list
-zendesk-cli ticket-form-show 123
+zcli-ticket ticket-field-list
+zcli-ticket ticket-field-show 12345
+zcli-ticket ticket-form-list
+zcli-ticket ticket-form-show 123
 ```
 
 ### Tags & Macros
 
 ```bash
-zendesk-cli tag-list
-zendesk-cli macro-list
-zendesk-cli macro-show 123
-zendesk-cli macro-apply --ticket-id 12345 --macro-id 67
+zcli-ticket tag-list
+zcli-ticket macro-list
+zcli-ticket macro-show 123
+zcli-ticket macro-apply --ticket-id 12345 --macro-id 67
 ```
 
 ### Suspended Tickets
 
 ```bash
-zendesk-cli suspended-list
-zendesk-cli suspended-recover 12345
-zendesk-cli suspended-delete 12345
+zcli-ticket suspended-list
+zcli-ticket suspended-recover 12345
+zcli-ticket suspended-delete 12345
 ```
 
 ### Incremental Exports
 
 ```bash
-zendesk-cli incremental-tickets 1710000000               # Tickets since timestamp
-zendesk-cli incremental-users 1710000000                 # Users since timestamp
-zendesk-cli incremental-orgs 1710000000                  # Orgs since timestamp
+zcli-ticket incremental-tickets 1710000000               # Tickets since timestamp
+zcli-ticket incremental-users 1710000000                 # Users since timestamp
+zcli-ticket incremental-orgs 1710000000                  # Orgs since timestamp
 ```
 
 ---

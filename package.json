@@ -1,5 +1,5 @@
 {
-  "name": "zendesk-cli",
+  "name": "zcli-ticket",
   "version": "0.1.0",
   "description": "CLI for Zendesk Ticketing API — AI agents and shell automation",
   "keywords": [
@@ -10,13 +10,13 @@
     "agent",
     "automation"
   ],
-  "homepage": "https://github.com/mack-peng/zendesk-cli#readme",
-  "repository": "github:mack-peng/zendesk-cli",
+  "homepage": "https://github.com/mack-peng/zcli-ticket#readme",
+  "repository": "github:mack-peng/zcli-ticket",
   "license": "MIT",
   "author": "strikingly",
   "main": "dist/index.js",
   "bin": {
-    "zendesk-cli": "./bin/zendesk-cli.js"
+    "zcli-ticket": "./bin/zcli-ticket.js"
   },
   "files": [
     "bin",
