@@ -121,6 +121,32 @@ Subdomain auto-resolves: `mycorp` → `mycorp.zendesk.com`, full domains like `m
 
 ---
 
+## Agent Skill
+
+Teach AI coding agents how to use zcli-ticket effectively:
+
+```bash
+# Install skill for all detected agents
+zcli-ticket skill-install
+
+# Install for a specific agent
+zcli-ticket skill-install --target opencode
+zcli-ticket skill-install --target claude
+zcli-ticket skill-install --target all
+
+# Install to a custom path
+zcli-ticket skill-install --path /path/to/project
+
+# Remove installed skills
+zcli-ticket skill-uninstall
+```
+
+The skill installs a `SKILL.md` + `references/pitfalls.md` into each agent's
+skill directory (`~/.agents/skills/`, `~/.claude/skills/`, etc.). Agents use it
+to discover commands, configure auth, and avoid common pitfalls.
+
+---
+
 ## Output Modes
 
 | Flag | Output | Use Case |
