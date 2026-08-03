@@ -1004,6 +1004,28 @@ const configNew = declareCommand({
   api: { method: 'GET', path: '' },
 });
 
+const skillInstall = declareCommand({
+  name: 'skill-install',
+  category: 'config',
+  description: 'Install Agent Skill for zcli-ticket',
+  options: z.object({
+    target: z.string().optional().describe('Agent target: auto, all, opencode, claude, codex, cursor, hermes, gemini (default: auto)'),
+    path: z.string().optional().describe('Custom install directory (overrides agent auto-detection)'),
+  }),
+  api: { method: 'GET', path: '' },
+});
+
+const skillUninstall = declareCommand({
+  name: 'skill-uninstall',
+  category: 'config',
+  description: 'Remove Agent Skill for zcli-ticket',
+  options: z.object({
+    target: z.string().optional().describe('Agent target: auto, all, opencode, claude, codex, cursor, hermes, gemini (default: auto)'),
+    path: z.string().optional().describe('Custom install directory'),
+  }),
+  api: { method: 'GET', path: '' },
+});
+
 const ticketThread = declareCommand({
   name: 'ticket-thread',
   category: 'tickets',
@@ -1050,6 +1072,7 @@ const commandsArray: AnyCommandSchema[] = [
   incrementalTickets,
   // config
   configShow, configSet, configPath, configList, configUse, configNew,
+  skillInstall, skillUninstall,
 ];
 
 export const commands = Object.fromEntries(commandsArray.map(cmd => [cmd.name, cmd]));
