@@ -1,6 +1,6 @@
 {
   "name": "zcli-ticket",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "CLI for Zendesk Ticketing API — AI agents and shell automation",
   "keywords": [
     "zendesk",
