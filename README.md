@@ -358,14 +358,21 @@ zcli-ticket incremental-orgs 1710000000                  # Orgs since timestamp
 ## Global Options
 
 ```
---json              Output as JSON (default: human-readable)
---raw               Output raw result without formatting
---help [command]    Show help for a command or global
---version           Show version
--p, --profile       Use named config profile
--s, --subdomain     Zendesk subdomain (or full domain)
--e, --email         Zendesk agent email
---token             API token
+--json                    Output as JSON (default: human-readable)
+--raw                     Output raw result without formatting
+--verbose                 Log token refreshes to stderr
+--help [command]          Show help for a command or global
+--version                 Show version
+-p, --profile             Use named config profile (or ZENDESK_PROFILE)
+-s, --subdomain           Zendesk subdomain (or full domain)
+-e, --email               Zendesk agent email
+--token                   API token
+--password                Password for basic auth
+--oauth-token             Static OAuth access token
+--oauth-client-id         OAuth client id (enables auto refresh)
+--oauth-client-secret     OAuth client secret (enables auto refresh)
+--oauth-scope             Space-separated OAuth scopes
+--mode                    Force auth mode: api-token | basic | oauth
 ```
 
 ---
@@ -375,7 +382,7 @@ zcli-ticket incremental-orgs 1710000000                  # Orgs since timestamp
 ```bash
 npm install
 npm run build       # tsc + generate help.json → dist/
-npm test            # Run 43 unit tests
+npm test            # Run 83 unit tests
 npx tsc --noEmit    # Type check only
 ```
 

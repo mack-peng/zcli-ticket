@@ -4,7 +4,7 @@
 
 `zcli-ticket` — CLI for Zendesk Ticketing API. Entrypoint: `bin/zcli-ticket.js` → `require('../dist/index')`.  
 Build: `npm run build` (= `tsc && tsx scripts/generate-help.ts` — compiles TS, then generates `help.json` directly into `dist/`).  
-Test: `npm test` (= `tsx --test tests/*.test.ts` — Node.js built-in test runner, 82 tests).  
+Test: `npm test` (= `tsx --test tests/*.test.ts` — Node.js built-in test runner, 83 tests).  
 Dependencies: `zod`. Dev: `typescript`, `@types/node`, `tsx`.
 
 ## Architecture
