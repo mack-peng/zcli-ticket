@@ -194,6 +194,9 @@ export function buildPitfallsMd(): string {
 - OAuth auto refresh is silent by default: tokens within 60s of expiry are
   re-exchanged before the request, and an HTTP 401 triggers one refresh +
   retry. Use \`--verbose\` to log refreshes to stderr.
+- Auth mode is inferred from credentials (OAuth wins when OAuth credentials
+  exist). Pin it with \`config-set mode <api-token|basic|oauth>\` or \`--mode\`
+  when a profile carries more than one credential type.
 - OAuth clients must be confidential (Admin Center -> Client kind); public
   clients fail with \`unauthorized_client\`.
 - CLI flags override the config file (\`~/.zendeskrc\`). Credentials must be

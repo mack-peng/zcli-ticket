@@ -227,7 +227,10 @@ ZENDESK_PROFILE=staging zcli-ticket ticket-list
 ## Common Failures Agents Face
 
 **"Missing required config"**
-→ Subdomain or email not set. Run `config-set` first.
+→ Subdomain not set. Run `config-set subdomain <subdomain>` first.
+
+**"API token mode requires --email and --token" / "Basic auth requires ..."**
+→ Credentials for the selected mode are missing. Check with `config-show`, then `config-set` them (or pin the mode with `config-set mode`).
 
 **401 / "Couldn't authenticate you"**
 → Bad API token. Check token in Zendesk Admin → API, or re-run `config-set token <value>`.

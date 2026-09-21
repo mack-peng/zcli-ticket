@@ -98,6 +98,7 @@ OAuth is one mode with two credential flavours. With `oauth-client-id` /
 - On HTTP 401 it refreshes once and retries the request once.
 - Refreshed tokens are written back to `~/.zendeskrc` (atomic write, file mode `0600`) together with `oauthTokenExpiresAt` and the granted scope.
 - Without client credentials, a static `oauth-token` behaves exactly as before.
+- If a profile carries several credential types, pin the mode explicitly with `config-set mode api-token|basic|oauth` (or `--mode`); otherwise OAuth wins whenever OAuth credentials exist.
 - `zcli-ticket oauth-login` performs the exchange explicitly (`--scope`, `--expires-in` 300-172800, default 172800). `--verbose` logs each refresh to stderr.
 - The OAuth client must be **confidential** (Zendesk Admin Center → APIs → OAuth clients → Client kind); public clients get `unauthorized_client`. `client_credentials` tokens never come with a `refresh_token`; expiry is handled by re-exchanging the client credentials.
 
@@ -142,6 +143,7 @@ Priority: CLI flags > Config file (`~/.zendeskrc`)
 --oauth-client-secret OAuth client secret (enables auto refresh)
 --oauth-scope         space-separated OAuth scopes
 -p, --profile         named profile (or ZENDESK_PROFILE env, for selecting a profile temporarily)
+--mode                force auth mode: api-token | basic | oauth
 ```
 
 Credentials must be configured first (`config-set` or per-command flags); there are no credential environment variables.

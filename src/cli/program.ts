@@ -15,7 +15,7 @@ import type { MinimistArgs } from './minimist';
 import type { AnyCommandSchema, HelpData, HelpEntry } from './command';
 import type { Config } from '../config/config';
 
-const globalOptions = ['json', 'raw', 'verbose', 'help', 'h', 'version', 'v', 's', 'subdomain', 'e', 'email', 'token', 'password', 'oauth-token', 'oauth-client-id', 'oauth-client-secret', 'oauth-scope', 'p', 'profile'];
+const globalOptions = ['json', 'raw', 'verbose', 'mode', 'help', 'h', 'version', 'v', 's', 'subdomain', 'e', 'email', 'token', 'password', 'oauth-token', 'oauth-client-id', 'oauth-client-secret', 'oauth-scope', 'p', 'profile'];
 const booleanGlobalOptions = ['help', 'json', 'raw', 'verbose', 'version', 'v', 'h'];
 
 export async function program() {
@@ -128,6 +128,9 @@ function handleConfigCommands(
       }
       case 'config-set': {
         const profileName = resolveProfileName(args);
+        const explicitSelection = !!(args.p || args.profile || process.env.ZENDESK_PROFILE);
+        if (explicitSelection && !getRcConfig().profiles[profileName])
+          output.error(`Profile '${profileName}' not found. Run: zcli-ticket config-new ${profileName}`);
         const result = writeRcConfig(parsed.key, parsed.value, profileName);
         console.log(output.format(result));
         return true;
@@ -403,29 +406,31 @@ async function dispatchRequest(
   pathStr: string,
   cmdEntry: HelpEntry
 ): Promise<any> {
-  const queryFlags = extractQueryFlags(args, cmdEntry);
   const transformed = command.transformRequest ? command.transformRequest(parsed) : parsed;
 
   if (command.list) {
-    const queryParams = queryParamsFrom(command, args, cmdEntry, transformed);
+    const queryParams = queryParamsFor(command, command.api.method, args, cmdEntry, transformed);
     return client.list(command.api.method, pathStr, queryParams);
   }
 
   const method = command.api.method;
   const isBodyMethod = method !== 'GET' && method !== 'DELETE';
-  const queryParams = isBodyMethod ? queryFlags : queryParamsFrom(command, args, cmdEntry, transformed);
+  const queryParams = queryParamsFor(command, method, args, cmdEntry, transformed);
   const apiOptions: Record<string, any> = { queryParams };
   if (isBodyMethod)
     apiOptions.body = transformed;
   return client.request(method, pathStr, apiOptions);
 }
 
-export function queryParamsFrom(
+export function queryParamsFor(
   command: AnyCommandSchema,
+  method: string,
   args: MinimistArgs,
   cmdEntry: HelpEntry,
   transformed: Record<string, any>
 ): Record<string, any> {
+  if (method !== 'GET' && method !== 'DELETE')
+    return {};
   const queryFlags = extractQueryFlags(args, cmdEntry);
   if (!command.transformRequest)
     return queryFlags;

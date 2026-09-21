@@ -6,6 +6,7 @@ import type { MinimistArgs } from '../cli/minimist';
 export interface ProfileConfig {
   subdomain: string;
   email: string;
+  mode?: string;
   token?: string;
   password?: string;
   oauthToken?: string;
@@ -25,11 +26,14 @@ interface RcFile {
   profiles: Record<string, ProfileConfig>;
 }
 
+export const AUTH_MODES = ['api-token', 'basic', 'oauth'] as const;
+export type AuthMode = (typeof AUTH_MODES)[number];
+
 export interface Config {
   profile?: string;
   subdomain: string;
   email: string;
-  mode: 'api-token' | 'basic' | 'oauth';
+  mode: AuthMode;
   token?: string;
   password?: string;
   oauthToken?: string;
@@ -112,6 +116,19 @@ function normalizeKey(key: string): string {
   return KEY_ALIASES[key] ?? key;
 }
 
+function resolveMode(explicit: unknown, fromProfile: unknown, inferred: AuthMode): AuthMode {
+  const value = typeof explicit === 'string' && explicit
+    ? explicit
+    : typeof fromProfile === 'string' && fromProfile
+      ? fromProfile
+      : undefined;
+  if (!value)
+    return inferred;
+  if (!(AUTH_MODES as readonly string[]).includes(value))
+    throw new Error(`Invalid auth mode '${value}'. Expected one of: ${AUTH_MODES.join(', ')}`);
+  return value as AuthMode;
+}
+
 export function maskSecret(value?: string): string {
   if (!value)
     return '(not set)';
@@ -156,7 +173,7 @@ export function loadConfig(args: MinimistArgs): Config {
   const oauthClientSecret = (args['oauth-client-secret'] as string) || readProfileValue(profile, 'oauthClientSecret');
   const oauthScope = (args['oauth-scope'] as string) || readProfileValue(profile, 'oauthScope');
 
-  const mode: 'api-token' | 'basic' | 'oauth' =
+  const inferredMode: AuthMode =
     oauthToken || (oauthClientId && oauthClientSecret)
       ? 'oauth'
       : token
@@ -164,12 +181,10 @@ export function loadConfig(args: MinimistArgs): Config {
         : password
           ? 'basic'
           : 'api-token';
+  const mode = resolveMode(args.mode, profile.mode, inferredMode);
 
-  if (!subdomain || !email)
-    throw new Error(
-      'Missing required config. Use --subdomain and --email flags, ' +
-      'or run: zcli-ticket config-set <key> <value>'
-    );
+  if (!subdomain)
+    throw new Error('Missing required config. Use --subdomain or run: zcli-ticket config-set subdomain <subdomain>');
 
   return {
     profile: profileName,
@@ -221,14 +236,17 @@ export function configFromProfile(profile: ProfileConfig): Config {
   return {
     subdomain: profile.subdomain || '',
     email: profile.email || '',
-    mode:
+    mode: resolveMode(
+      undefined,
+      profile.mode,
       oauthToken || (oauthClientId && oauthClientSecret)
         ? 'oauth'
         : profile.token
           ? 'api-token'
           : profile.password
             ? 'basic'
-            : 'api-token',
+            : 'api-token'
+    ),
     token: profile.token,
     password: profile.password,
     oauthToken,
@@ -248,7 +266,7 @@ export function maskConfig(config: Config): Record<string, string> {
 
   return {
     subdomain: config.subdomain,
-    email: config.email,
+    email: config.email || '(not set)',
     mode: config.mode,
     token: config.token ? config.token.slice(0, 4) + '***' + config.token.slice(-2) : '(not set)',
     password: config.password ? '****' : '(not set)',
@@ -269,6 +287,8 @@ export function writeRcConfig(key: string, value: string, profileName?: string):
     rc.profiles[name] = { subdomain: '', email: '' };
   const p = rc.profiles[name];
   const canonicalKey = normalizeKey(key);
+  if (canonicalKey === 'mode' && !(AUTH_MODES as readonly string[]).includes(value))
+    throw new Error(`Invalid auth mode '${value}'. Expected one of: ${AUTH_MODES.join(', ')}`);
   (p as unknown as Record<string, string>)[canonicalKey] = value;
   migrateLegacyKeys(p);
   writeRcFile(rc);

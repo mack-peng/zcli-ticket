@@ -103,6 +103,11 @@ describe('config', () => {
       assert.strictEqual(result.oauthToken, '****');
       assert.strictEqual(result.oauthClientSecret, '****');
     });
+
+    it('shows (not set) for a missing email', () => {
+      const result = maskConfig({ subdomain: 'x', email: '', mode: 'oauth', output: 'text', raw: false });
+      assert.strictEqual(result.email, '(not set)');
+    });
   });
 
   describe('rc file', () => {
@@ -207,6 +212,54 @@ describe('config', () => {
       assert.strictEqual(config.profile, 'sxl');
       assert.strictEqual(config.subdomain, 'b');
       assert.strictEqual(config.email, 'b@corp.com');
+    });
+
+    it('honours an explicit mode over credential inference', () => {
+      fs.writeFileSync(rcPath, JSON.stringify({
+        active: 'default',
+        profiles: {
+          default: {
+            subdomain: 'x', email: 'a@b.c', password: 'pw', mode: 'basic',
+            oauthClientId: 'cid', oauthClientSecret: 'sec',
+          },
+        },
+      }) + '\n');
+
+      const config = loadConfig({ _: [] } as any);
+      assert.strictEqual(config.mode, 'basic');
+      assert.strictEqual(config.password, 'pw');
+    });
+
+    it('accepts a --mode override', () => {
+      fs.writeFileSync(rcPath, JSON.stringify({
+        active: 'default',
+        profiles: { default: { subdomain: 'x', email: 'a@b.c', token: 'tok', oauthClientId: 'cid', oauthClientSecret: 'sec' } },
+      }) + '\n');
+
+      assert.strictEqual(loadConfig({ _: [] } as any).mode, 'oauth');
+      assert.strictEqual(loadConfig({ _: [], mode: 'api-token' } as any).mode, 'api-token');
+    });
+
+    it('rejects an invalid mode', () => {
+      fs.writeFileSync(rcPath, JSON.stringify({
+        active: 'default',
+        profiles: { default: { subdomain: 'x', email: 'a@b.c', mode: 'nope' } },
+      }) + '\n');
+
+      assert.throws(() => loadConfig({ _: [] } as any), /Invalid auth mode/);
+      assert.throws(() => loadConfig({ _: [], mode: 'nope' } as any), /Invalid auth mode/);
+      assert.throws(() => writeRcConfig('mode', 'nope'), /Invalid auth mode/);
+    });
+
+    it('does not require email in oauth mode', () => {
+      fs.writeFileSync(rcPath, JSON.stringify({
+        active: 'default',
+        profiles: { default: { subdomain: 'x', email: '', oauthToken: 'tok' } },
+      }) + '\n');
+
+      const config = loadConfig({ _: [] } as any);
+      assert.strictEqual(config.mode, 'oauth');
+      assert.strictEqual(config.email, '');
     });
 
     it('writes to a named profile without touching others', () => {

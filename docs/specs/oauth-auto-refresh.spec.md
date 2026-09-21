@@ -44,9 +44,11 @@
 | `oauthToken` | — | `--oauth-token` | 否 | 当前 access token（仍兼容纯静态用法） |
 | `oauthTokenExpiresAt` | — | — | 否 | 写入侧维护：token 失效时刻（Unix 秒） |
 | `oauthScopeGranted` | — | — | 否 | 写入侧维护：响应返回的实际 scope |
+| `mode` | — | `--mode` | 否 | 显式指定鉴权模式（api-token / basic / oauth）；未设置时按凭据推断 |
 
 > 决策（2026-09-21）：凭据类配置**不支持环境变量**，必须先配置（`config-set` 或 CLI flags）。
 > `ZENDESK_PROFILE` 仅用于进程级选择 profile（临时使用某个 profile，等同 `-p`）。
+> 显式 `mode` 用于消除「同时存在 api-token 与 OAuth 凭据」时的歧义（校验于写入与读取两处）。
 
 - `mode` 判定不变：存在 `oauthToken` 或 client 凭据即 `oauth`。
 - `config-show` 中 secret / token 一律掩码（前 6 位 + `...`），并额外展示 `expires_at`（本地时间）与剩余有效期。
