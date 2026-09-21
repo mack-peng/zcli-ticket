@@ -1,5 +1,6 @@
 import * as z from 'zod';
 import { declareCommand } from './command';
+import { OAUTH_EXPIRES_IN_MIN, OAUTH_EXPIRES_IN_MAX, DEFAULT_OAUTH_EXPIRES_IN } from '../api/oauth';
 import type { AnyCommandSchema } from './command';
 
 const numberArg = z.preprocess((val, ctx) => {
@@ -976,7 +977,7 @@ const oauthLogin = declareCommand({
   description: 'Exchange OAuth client credentials for an access token and store it',
   options: z.object({
     scope: z.string().optional().describe('space-separated OAuth scopes (defaults to oauth-scope config)'),
-    'expires-in': numberArg.optional().describe('requested token lifetime in seconds (300-172800, default 172800)'),
+    'expires-in': numberArg.optional().describe(`requested token lifetime in seconds (${OAUTH_EXPIRES_IN_MIN}-${OAUTH_EXPIRES_IN_MAX}, default ${DEFAULT_OAUTH_EXPIRES_IN})`),
   }),
   api: { method: 'GET', path: '' },
 });

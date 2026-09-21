@@ -193,6 +193,30 @@ describe('oauth', () => {
       assert.strictEqual(persisted[0].scopeGranted, 'read');
     });
 
+    it('requests the maximum TTL when refreshing', async () => {
+      const bodies: any[] = [];
+      globalThis.fetch = (async (url: any, init: any) => {
+        if (String(url).includes('/oauth/tokens')) {
+          bodies.push(JSON.parse(init.body));
+          return jsonResponse({ access_token: 'tok_new', expires_in: 172800, scope: 'read' });
+        }
+        return jsonResponse({ ok: true });
+      }) as any;
+
+      const auth = createAuthProvider({
+        mode: 'oauth',
+        subdomain: 'mycorp',
+        oauthClientId: 'id1',
+        oauthClientSecret: 'sec1',
+        oauthToken: 'tok_old',
+        oauthTokenExpiresAt: nowSeconds() + 10,
+      });
+
+      await auth.getHeaders();
+      assert.strictEqual(bodies.length, 1);
+      assert.strictEqual(bodies[0].expires_in, 172800);
+    });
+
     it('does not refresh again when the token response omits expires_in', async () => {
       let tokenCalls = 0;
       globalThis.fetch = (async (url: any) => {
