@@ -76,6 +76,7 @@
 
 - 无 `oauthClientId`/`oauthClientSecret`：维持现状（直接用已有 `oauthToken`；失败原样报错），不得因此报出“需要凭据”的新错误。
 - 无 `oauthTokenExpiresAt`（历史配置/纯静态 token）：视为未知过期，直接用；仅在 401 时尝试刷新。
+- 刷新请求同样携带 `expires_in: 172800`（Zendesk 上限）以减少刷新频率；若服务端返回更小值，以响应为准落盘（2026-09-21 补充：修复自动刷新走 1800s 服务端默认的问题）。
 - 多个 token 并存：每次刷新**不**假定旧 token 失效（client_credentials 生成的 token 相互独立，Zendesk 不互踢）。
 - 写回 rc 失败（如磁盘只读）不阻断本次请求：本次用内存中的 token 完成请求，仅打印一次 warning。
 - 并发（两个进程同时刷新）：允许 benign race（各自写回，后写胜出）；如需强一致，用文件锁，但非硬性要求。

@@ -1,5 +1,9 @@
 import { resolveBaseUrl } from './client';
 
+export const OAUTH_EXPIRES_IN_MIN = 300;
+export const OAUTH_EXPIRES_IN_MAX = 172800;
+export const DEFAULT_OAUTH_EXPIRES_IN = OAUTH_EXPIRES_IN_MAX;
+
 export interface ClientCredentialsParams {
   subdomain: string;
   clientId: string;

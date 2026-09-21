@@ -1,4 +1,4 @@
-import { exchangeClientCredentials } from './oauth';
+import { exchangeClientCredentials, DEFAULT_OAUTH_EXPIRES_IN } from './oauth';
 
 export type AuthMode = 'api-token' | 'basic' | 'oauth';
 
@@ -70,6 +70,7 @@ export function createAuthProvider(config: AuthConfig): AuthProvider {
                 clientId: config.oauthClientId!,
                 clientSecret: config.oauthClientSecret!,
                 scope: config.oauthScope,
+                expiresIn: DEFAULT_OAUTH_EXPIRES_IN,
               });
               accessToken = result.accessToken;
               expiresAt = result.expiresIn > 0 ? nowSeconds() + result.expiresIn : undefined;

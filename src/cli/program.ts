@@ -8,7 +8,7 @@ import { TextOutput, JsonOutput } from './output';
 import { loadConfig, maskConfig, writeRcConfig, rcFilePath, getRcConfig, setActiveProfile, createProfile, configFromProfile, loadOauthClientConfig, saveOauthToken, formatLocalTime, resolveProfileName, maskSecret } from '../config/config';
 import { createAuthProvider } from '../api/auth';
 import { ZendeskClient } from '../api/client';
-import { exchangeClientCredentials } from '../api/oauth';
+import { exchangeClientCredentials, DEFAULT_OAUTH_EXPIRES_IN, OAUTH_EXPIRES_IN_MIN, OAUTH_EXPIRES_IN_MAX } from '../api/oauth';
 import { buildSkillMd, buildPitfallsMd } from '../installer/skill-template';
 import type { Output } from './output';
 import type { MinimistArgs } from './minimist';
@@ -306,15 +306,15 @@ async function handleOauthLogin(
       );
 
     const expiresIn = parsed['expires-in'];
-    if (expiresIn !== undefined && (expiresIn < 300 || expiresIn > 172800))
-      throw new Error(`--expires-in must be between 300 and 172800 seconds, received ${expiresIn}`);
+    if (expiresIn !== undefined && (expiresIn < OAUTH_EXPIRES_IN_MIN || expiresIn > OAUTH_EXPIRES_IN_MAX))
+      throw new Error(`--expires-in must be between ${OAUTH_EXPIRES_IN_MIN} and ${OAUTH_EXPIRES_IN_MAX} seconds, received ${expiresIn}`);
 
     const result = await exchangeClientCredentials({
       subdomain: config.subdomain,
       clientId: config.clientId,
       clientSecret: config.clientSecret,
       scope: parsed.scope || config.scope,
-      expiresIn: expiresIn ?? 172800,
+      expiresIn: expiresIn ?? DEFAULT_OAUTH_EXPIRES_IN,
     });
 
     const expiresAt = Math.floor(Date.now() / 1000) + result.expiresIn;

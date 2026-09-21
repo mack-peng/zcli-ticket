@@ -97,6 +97,7 @@ OAuth is one mode with two credential flavours. With `oauth-client-id` /
 - Before each request, a token missing or expiring within 60s is refreshed automatically.
 - On HTTP 401 it refreshes once and retries the request once.
 - Refreshed tokens are written back to `~/.zendeskrc` (atomic write, file mode `0600`) together with `oauthTokenExpiresAt` and the granted scope.
+- Both `oauth-login` and automatic refresh request the maximum TTL (`expires_in: 172800`, 2 days — Zendesk's ceiling); if the server issues a smaller lifetime it is persisted as-is.
 - Without client credentials, a static `oauth-token` behaves exactly as before.
 - If a profile carries several credential types, pin the mode explicitly with `config-set mode api-token|basic|oauth` (or `--mode`); otherwise OAuth wins whenever OAuth credentials exist.
 - `zcli-ticket oauth-login` performs the exchange explicitly (`--scope`, `--expires-in` 300-172800, default 172800). `--verbose` logs each refresh to stderr.
