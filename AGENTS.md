@@ -75,3 +75,17 @@ src/
 | Help text | Manual strings | Generated from Zod `.describe()` at build time |
 | CLI ↔ API mapping | Inline in action handler | Declared in schema via `api.path`, `transformRequest` |
 | Testability | Requires mocking Commander | Pure functions: `parseCommand(schema, args)` → result |
+
+## Releasing
+
+Publishing is automated by `.github/workflows/publish.yml`: pushing a `v*` tag
+runs `npm ci` + typecheck + build + tests, then publishes to npm with provenance.
+
+1. `npm version patch` — bumps `package.json`, commits, creates the `vX.Y.Z` tag
+2. `git push origin <branch> --follow-tags`
+3. Watch the `Publish to npm` workflow run; verify with `npm view zcli-ticket version`
+
+Auth: npm Trusted Publishing (OIDC, `id-token: write`) — no `NPM_TOKEN` secret is
+needed once the trusted publisher (repo `mack-peng/zcli-ticket`, workflow
+`publish.yml`) is configured on npmjs.com. Otherwise add
+`NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}` to the publish step.
