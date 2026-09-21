@@ -107,7 +107,7 @@ zcli-ticket --subdomain otherco --email me@other.co --token abc ticket-show 1234
 | Mode | Set this | Use case |
 |------|----------|----------|
 | Basic Auth | `config-set password <pwd>` | Legacy accounts without API tokens |
-| OAuth | `config-set oauth-token <token>` | OAuth 2.0 integrations |
+| OAuth | `config-set oauth-token <token>` (static) or `config-set oauth-client-id <id>` + `config-set oauth-client-secret <secret>` + `oauth-login` (auto refresh) | OAuth 2.0 integrations; auto refresh requires a confidential client |
 
 ---
 
@@ -207,27 +207,27 @@ zcli-ticket -p myprofile ticket-list             # Use a specific profile
 
 ---
 
-## Environment Variables (Skip Config Entirely)
+## Per-Process Profile Selection
+
+Credentials must be configured first (`config-set`); there are no credential
+environment variables. To run a single process against a specific profile
+without changing the active one, use `-p` or `ZENDESK_PROFILE`:
 
 ```bash
-export ZENDESK_SUBDOMAIN=mycompany
-export ZENDESK_EMAIL=agent@company.com
-export ZENDESK_TOKEN=abc123xyz
+zcli-ticket -p staging ticket-list
+ZENDESK_PROFILE=staging zcli-ticket ticket-list
 ```
 
-Then run any command without `-s`, `-e`, or `--token`.
-
 **Priority** (highest to lowest):
-1. CLI flags: `--subdomain`, `--email`, `--token`
-2. Environment variables: `ZENDESK_SUBDOMAIN`, `ZENDESK_EMAIL`, `ZENDESK_TOKEN`
-3. Config file: `~/.zendeskrc`
+1. CLI flags: `--subdomain`, `--email`, `--token`, ... (override profile values)
+2. Config file: `~/.zendeskrc` profiles (`-p` / `ZENDESK_PROFILE` / `config-use` select one)
 
 ---
 
 ## Common Failures Agents Face
 
 **"Missing required config"**
-→ Subdomain or email not set. Run `config-set` or set env vars.
+→ Subdomain or email not set. Run `config-set` first.
 
 **401 / "Couldn't authenticate you"**
 → Bad API token. Check token in Zendesk Admin → API, or re-run `config-set token <value>`.

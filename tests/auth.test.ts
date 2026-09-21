@@ -52,12 +52,12 @@ describe('auth', () => {
   });
 
   describe('oauth mode', () => {
-    it('generates Bearer token header', () => {
+    it('generates Bearer token header', async () => {
       const auth = createAuthProvider({
         mode: 'oauth',
         oauthToken: 'tok_xyz',
       });
-      const headers = auth.getHeaders();
+      const headers = await auth.getHeaders();
       assert.strictEqual(headers.Authorization, 'Bearer tok_xyz');
     });
 
