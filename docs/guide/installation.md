@@ -82,6 +82,7 @@ Then configure:
 zcli-ticket config-set subdomain mycompany
 zcli-ticket config-set email agent@company.com
 zcli-ticket config-set token abc123xyz
+zcli-ticket config-set mode api-token   # optional: force api-token | basic | oauth
 ```
 
 Config is stored at `~/.zendeskrc`. Multi-instance? Use profiles:

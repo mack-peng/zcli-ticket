@@ -1,7 +1,7 @@
 # 需求：OAuth client_credentials 自动刷新
 
 - 目标仓库：`zcli-ticket`（本 repo）
-- 状态：需求已定，待实现
+- 状态：已实现（v0.1.4，tag 推送触发 GitHub Actions 自动发布）
 - 附带：修复 `config-set oauth-token` 的 key 不一致 bug（沿用同一需求批次）
 
 ## Problem
@@ -136,7 +136,7 @@
 
 ## Sign-off
 
-- [ ] 需求确认（Mack）
-- [ ] 实现完成 + `npm test` / `npm run typecheck` 通过
-- [ ] README / AGENTS.md / skill 模板已更新
-- [ ] 版本号与发布方式确认（是否发 0.1.4）
+- [x] 需求确认（Mack）
+- [x] 实现完成 + `npm test`（82 tests）/ `npm run typecheck` 通过
+- [x] README / AGENTS.md / skill 模板已更新
+- [x] 版本号与发布方式确认：v0.1.4，`npm version patch` + tag push 触发 `.github/workflows/publish.yml` 自动发布（Trusted Publishing + provenance）

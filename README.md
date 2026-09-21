@@ -86,7 +86,7 @@ zcli-ticket ticket-thread 12345         # Ticket + all comments → _comments fi
 | Basic Auth | `password` | `{email}:{password}` base64 |
 | OAuth | `oauth-token`, or `oauth-client-id` + `oauth-client-secret` | `Bearer {token}`; with client credentials the token is exchanged via `client_credentials` and refreshed automatically |
 
-Config file (`~/.zendeskrc`) stores credentials per profile. Use `config-show` to verify without exposing secrets.
+Config file (`~/.zendeskrc`) stores credentials per profile. Use `config-show` to verify without exposing secrets. If a profile has more than one credential type, pin the mode with `config-set mode` or `--mode`.
 
 ### OAuth auto refresh
 
@@ -111,6 +111,9 @@ OAuth is one mode with two credential flavours. With `oauth-client-id` /
 zcli-ticket config-set subdomain mycompany
 zcli-ticket config-set email agent@company.com
 zcli-ticket config-set token abc123xyz
+
+# Force an auth mode when a profile has several credential types
+zcli-ticket config-set mode api-token                # api-token | basic | oauth
 
 # OAuth client credentials (enables auto refresh)
 zcli-ticket config-set oauth-client-id <client-id>
