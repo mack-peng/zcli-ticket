@@ -112,8 +112,10 @@ function normalizeKey(key: string): string {
   return KEY_ALIASES[key] ?? key;
 }
 
-function maskSecret(value?: string): string {
-  return value ? value.slice(0, 6) + '...' : '(not set)';
+export function maskSecret(value?: string): string {
+  if (!value)
+    return '(not set)';
+  return value.length > 6 ? value.slice(0, 6) + '...' : '****';
 }
 
 export function formatLocalTime(unixSeconds: number): string {
@@ -275,7 +277,7 @@ export function writeRcConfig(key: string, value: string, profileName?: string):
 
 export interface OauthTokenData {
   accessToken: string;
-  expiresAt: number;
+  expiresAt?: number;
   scopeGranted?: string;
 }
 
@@ -286,7 +288,10 @@ export function saveOauthToken(profileName: string | undefined, data: OauthToken
     rc.profiles[name] = { subdomain: '', email: '' };
   const p = rc.profiles[name];
   p.oauthToken = data.accessToken;
-  p.oauthTokenExpiresAt = data.expiresAt;
+  if (data.expiresAt !== undefined)
+    p.oauthTokenExpiresAt = data.expiresAt;
+  else
+    delete p.oauthTokenExpiresAt;
   if (data.scopeGranted)
     p.oauthScopeGranted = data.scopeGranted;
   migrateLegacyKeys(p);

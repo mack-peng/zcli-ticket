@@ -93,6 +93,16 @@ describe('config', () => {
       assert.strictEqual(result.oauthTokenExpiresIn, '(not set)');
       assert.strictEqual(result.oauthClientSecret, '(not set)');
     });
+
+    it('fully masks secrets shorter than the reveal prefix', () => {
+      const result = maskConfig({
+        subdomain: 'x', email: 'a@b.c', mode: 'oauth',
+        oauthToken: 'abc', oauthClientSecret: 's3cret',
+        output: 'text', raw: false,
+      });
+      assert.strictEqual(result.oauthToken, '****');
+      assert.strictEqual(result.oauthClientSecret, '****');
+    });
   });
 
   describe('rc file', () => {

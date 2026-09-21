@@ -193,6 +193,32 @@ describe('oauth', () => {
       assert.strictEqual(persisted[0].scopeGranted, 'read');
     });
 
+    it('does not refresh again when the token response omits expires_in', async () => {
+      let tokenCalls = 0;
+      globalThis.fetch = (async (url: any) => {
+        if (String(url).includes('/oauth/tokens')) {
+          tokenCalls++;
+          return jsonResponse({ access_token: 'tok_new', scope: 'read' });
+        }
+        return jsonResponse({ ok: true });
+      }) as any;
+
+      const auth = createAuthProvider({
+        mode: 'oauth',
+        subdomain: 'mycorp',
+        oauthClientId: 'id1',
+        oauthClientSecret: 'sec1',
+        oauthToken: 'tok_old',
+        oauthTokenExpiresAt: nowSeconds() + 10,
+      });
+
+      const first = await auth.getHeaders();
+      const second = await auth.getHeaders();
+      assert.strictEqual(tokenCalls, 1);
+      assert.strictEqual(first.Authorization, 'Bearer tok_new');
+      assert.strictEqual(second.Authorization, 'Bearer tok_new');
+    });
+
     it('does not expose refresh without client credentials', () => {
       const auth = createAuthProvider({ mode: 'oauth', oauthToken: 'tok' });
       assert.strictEqual(auth.refresh, undefined);

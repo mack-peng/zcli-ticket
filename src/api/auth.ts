@@ -15,7 +15,7 @@ export interface AuthConfig {
   oauthScope?: string;
   subdomain?: string;
   verbose?: boolean;
-  persist?: (token: { accessToken: string; expiresAt: number; scopeGranted?: string }) => void;
+  persist?: (token: { accessToken: string; expiresAt?: number; scopeGranted?: string }) => void;
 }
 
 export interface AuthProvider {
@@ -72,7 +72,7 @@ export function createAuthProvider(config: AuthConfig): AuthProvider {
                 scope: config.oauthScope,
               });
               accessToken = result.accessToken;
-              expiresAt = nowSeconds() + result.expiresIn;
+              expiresAt = result.expiresIn > 0 ? nowSeconds() + result.expiresIn : undefined;
               try {
                 config.persist?.({ accessToken, expiresAt, scopeGranted: result.scope });
               } catch (e) {

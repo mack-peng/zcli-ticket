@@ -5,7 +5,7 @@ import { minimist } from './minimist';
 import { parseCommand } from './command';
 import { commands } from './commands';
 import { TextOutput, JsonOutput } from './output';
-import { loadConfig, maskConfig, writeRcConfig, rcFilePath, getRcConfig, setActiveProfile, createProfile, configFromProfile, loadOauthClientConfig, saveOauthToken, formatLocalTime, resolveProfileName } from '../config/config';
+import { loadConfig, maskConfig, writeRcConfig, rcFilePath, getRcConfig, setActiveProfile, createProfile, configFromProfile, loadOauthClientConfig, saveOauthToken, formatLocalTime, resolveProfileName, maskSecret } from '../config/config';
 import { createAuthProvider } from '../api/auth';
 import { ZendeskClient } from '../api/client';
 import { exchangeClientCredentials } from '../api/oauth';
@@ -116,17 +116,14 @@ function handleConfigCommands(
 
     switch (commandName) {
       case 'config-show': {
-        const profileName = args.profile as string || undefined;
-        if (profileName) {
-          const rc = getRcConfig();
+        const profileName = resolveProfileName(args);
+        const rc = getRcConfig();
+        if (rc.profiles[profileName] && (args.p || args.profile)) {
           const profile = rc.profiles[profileName];
-          if (!profile)
-            output.error(`Profile '${profileName}' not found`);
           console.log(output.format({ active: rc.active, profile: profileName, ...maskConfig(configFromProfile(profile)) }));
           return true;
         }
-        const { config } = setupClient(args);
-        console.log(output.format(maskConfig(config)));
+        console.log(output.format(maskConfig(loadConfig(args))));
         return true;
       }
       case 'config-set': {
@@ -325,7 +322,7 @@ async function handleOauthLogin(
       scope: result.scope || '(default)',
       expires_in: result.expiresIn,
       expires_at: formatLocalTime(expiresAt),
-      token: result.accessToken.slice(0, 6) + '...',
+      token: maskSecret(result.accessToken),
     }));
   } catch (e) {
     output.error(e instanceof Error ? e.message : String(e));
