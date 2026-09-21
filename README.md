@@ -47,7 +47,12 @@ zcli-ticket config-set token abc123xyz
 # Or basic auth
 zcli-ticket config-set password mypassword
 
-# Or OAuth
+# Or OAuth with auto refresh (client_credentials)
+zcli-ticket config-set oauth-client-id <client-id>
+zcli-ticket config-set oauth-client-secret <client-secret>
+zcli-ticket oauth-login                          # exchange now, store token + expiry
+
+# Or a static OAuth token (no auto refresh)
 zcli-ticket config-set oauth-token eyJ...
 
 # Multi-profile support
@@ -79,9 +84,23 @@ zcli-ticket ticket-thread 12345         # Ticket + all comments → _comments fi
 |------|--------|-------------|
 | API Token | `token` | `{email}/token:{token}` base64 (recommended) |
 | Basic Auth | `password` | `{email}:{password}` base64 |
-| OAuth | `oauth-token` | `Bearer {token}` |
+| OAuth | `oauth-token`, or `oauth-client-id` + `oauth-client-secret` | `Bearer {token}`; with client credentials the token is exchanged via `client_credentials` and refreshed automatically |
 
-Config file (`~/.zendeskrc`) stores credentials per profile. Use `config-show` to verify without exposing secrets.
+Config file (`~/.zendeskrc`) stores credentials per profile. Use `config-show` to verify without exposing secrets. If a profile has more than one credential type, pin the mode with `config-set mode` or `--mode`.
+
+### OAuth auto refresh
+
+OAuth is one mode with two credential flavours. With `oauth-client-id` /
+`oauth-client-secret` configured, zcli-ticket exchanges them for an access token
+(`POST /oauth/tokens`, grant type `client_credentials`) and keeps it fresh:
+
+- Before each request, a token missing or expiring within 60s is refreshed automatically.
+- On HTTP 401 it refreshes once and retries the request once.
+- Refreshed tokens are written back to `~/.zendeskrc` (atomic write, file mode `0600`) together with `oauthTokenExpiresAt` and the granted scope.
+- Without client credentials, a static `oauth-token` behaves exactly as before.
+- If a profile carries several credential types, pin the mode explicitly with `config-set mode api-token|basic|oauth` (or `--mode`); otherwise OAuth wins whenever OAuth credentials exist.
+- `zcli-ticket oauth-login` performs the exchange explicitly (`--scope`, `--expires-in` 300-172800, default 172800). `--verbose` logs each refresh to stderr.
+- The OAuth client must be **confidential** (Zendesk Admin Center → APIs → OAuth clients → Client kind); public clients get `unauthorized_client`. `client_credentials` tokens never come with a `refresh_token`; expiry is handled by re-exchanging the client credentials.
 
 ---
 
@@ -93,7 +112,16 @@ zcli-ticket config-set subdomain mycompany
 zcli-ticket config-set email agent@company.com
 zcli-ticket config-set token abc123xyz
 
-# Show current config (secrets masked)
+# Force an auth mode when a profile has several credential types
+zcli-ticket config-set mode api-token                # api-token | basic | oauth
+
+# OAuth client credentials (enables auto refresh)
+zcli-ticket config-set oauth-client-id <client-id>
+zcli-ticket config-set oauth-client-secret <client-secret>
+zcli-ticket config-set oauth-scope "tickets:read users:read"   # optional
+zcli-ticket oauth-login                                        # exchange + store token/expiry
+
+# Show current config (secrets masked, OAuth expiry shown)
 zcli-ticket config-show
 
 # Show config file location
@@ -106,16 +134,24 @@ zcli-ticket config-use myprofile                    # Switch to it
 zcli-ticket config-list                             # List all profiles
 ```
 
-Priority: CLI flags > Environment variables > Config file
+Priority: CLI flags > Config file (`~/.zendeskrc`)
 
 ```
--s, --subdomain   ZENDESK_SUBDOMAIN
--e, --email       ZENDESK_EMAIL
---token           ZENDESK_TOKEN
---password        ZENDESK_PASSWORD
---oauth-token     ZENDESK_OAUTH_TOKEN
--p, --profile     ZENDESK_PROFILE
+-s, --subdomain       Zendesk subdomain
+-e, --email           Zendesk agent email
+--token               API token
+--password            password for basic auth
+--oauth-token         static OAuth access token
+--oauth-client-id     OAuth client id (enables auto refresh)
+--oauth-client-secret OAuth client secret (enables auto refresh)
+--oauth-scope         space-separated OAuth scopes
+-p, --profile         named profile (or ZENDESK_PROFILE env, for selecting a profile temporarily)
+--mode                force auth mode: api-token | basic | oauth
 ```
+
+Credentials must be configured first (`config-set` or per-command flags); there are no credential environment variables.
+
+Known config keys are normalized on write (`config-set oauth-token ...` is stored as `oauthToken`, and legacy kebab-case keys from older versions are migrated on the next write).
 
 Subdomain auto-resolves: `mycorp` → `mycorp.zendesk.com`, full domains like `mycorp.zendesk.de` or `support.mycorp.com` work directly.
 

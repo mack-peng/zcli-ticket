@@ -100,6 +100,11 @@ export function generateHelp() {
   lines.push(formatWithGap('  --token <token>', 'API token'));
   lines.push(formatWithGap('  --password <password>', 'password for basic auth'));
   lines.push(formatWithGap('  --oauth-token <token>', 'OAuth access token'));
+  lines.push(formatWithGap('  --oauth-client-id <id>', 'OAuth client identifier (enables auto refresh)'));
+  lines.push(formatWithGap('  --oauth-client-secret <secret>', 'OAuth client secret (enables auto refresh)'));
+  lines.push(formatWithGap('  --oauth-scope <scope>', 'space-separated OAuth scopes'));
+  lines.push(formatWithGap('  --mode <mode>', 'force auth mode: api-token, basic, oauth'));
+  lines.push(formatWithGap('  --verbose', 'log token refreshes to stderr'));
 
   return lines.join('\n');
 }

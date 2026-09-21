@@ -5,17 +5,18 @@ import { minimist } from './minimist';
 import { parseCommand } from './command';
 import { commands } from './commands';
 import { TextOutput, JsonOutput } from './output';
-import { loadConfig, maskConfig, writeRcConfig, rcFilePath, getRcConfig, setActiveProfile, createProfile } from '../config/config';
+import { loadConfig, maskConfig, writeRcConfig, rcFilePath, getRcConfig, setActiveProfile, createProfile, configFromProfile, loadOauthClientConfig, saveOauthToken, formatLocalTime, resolveProfileName, maskSecret } from '../config/config';
 import { createAuthProvider } from '../api/auth';
 import { ZendeskClient } from '../api/client';
+import { exchangeClientCredentials } from '../api/oauth';
 import { buildSkillMd, buildPitfallsMd } from '../installer/skill-template';
 import type { Output } from './output';
 import type { MinimistArgs } from './minimist';
 import type { AnyCommandSchema, HelpData, HelpEntry } from './command';
 import type { Config } from '../config/config';
 
-const globalOptions = ['json', 'raw', 'help', 'h', 'version', 'v', 's', 'subdomain', 'e', 'email', 'token', 'password', 'oauth-token', 'p', 'profile'];
-const booleanGlobalOptions = ['help', 'json', 'raw', 'version', 'v', 'h'];
+const globalOptions = ['json', 'raw', 'verbose', 'mode', 'help', 'h', 'version', 'v', 's', 'subdomain', 'e', 'email', 'token', 'password', 'oauth-token', 'oauth-client-id', 'oauth-client-secret', 'oauth-scope', 'p', 'profile'];
+const booleanGlobalOptions = ['help', 'json', 'raw', 'verbose', 'version', 'v', 'h'];
 
 export async function program() {
   const pkg = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'package.json'), 'utf-8'));
@@ -45,6 +46,9 @@ export async function program() {
     return;
 
   if (handleSkillCommands(commandName, command, rawArgs, output))
+    return;
+
+  if (await handleOauthLogin(commandName, command, rawArgs, output))
     return;
 
   if (await handleThreadCommand(commandName, command, rawArgs, output))
@@ -87,6 +91,13 @@ function setupClient(args: MinimistArgs): { config: Config; client: ZendeskClien
     token: config.token,
     password: config.password,
     oauthToken: config.oauthToken,
+    oauthTokenExpiresAt: config.oauthTokenExpiresAt,
+    oauthClientId: config.oauthClientId,
+    oauthClientSecret: config.oauthClientSecret,
+    oauthScope: config.oauthScope,
+    subdomain: config.subdomain,
+    verbose: config.verbose,
+    persist: (token) => saveOauthToken(config.profile, token),
   });
   const client = new ZendeskClient(config.subdomain, auth);
   return { config, client };
@@ -105,31 +116,21 @@ function handleConfigCommands(
 
     switch (commandName) {
       case 'config-show': {
-        const profileName = args.profile as string || undefined;
-        if (profileName) {
-          const rc = getRcConfig();
+        const profileName = resolveProfileName(args);
+        const rc = getRcConfig();
+        if (rc.profiles[profileName] && (args.p || args.profile)) {
           const profile = rc.profiles[profileName];
-          if (!profile)
-            output.error(`Profile '${profileName}' not found`);
-          const masked = maskConfig({
-            subdomain: profile.subdomain || '',
-            email: profile.email || '',
-            mode: profile.oauthToken ? 'oauth' : profile.token ? 'api-token' : 'basic',
-            token: profile.token,
-            password: profile.password,
-            oauthToken: profile.oauthToken,
-            output: 'text',
-            raw: false,
-          });
-          console.log(output.format({ active: rc.active, profile: profileName, ...masked }));
+          console.log(output.format({ active: rc.active, profile: profileName, ...maskConfig(configFromProfile(profile)) }));
           return true;
         }
-        const { config } = setupClient(args);
-        console.log(output.format(maskConfig(config)));
+        console.log(output.format(maskConfig(loadConfig(args))));
         return true;
       }
       case 'config-set': {
-        const profileName = args.profile as string || undefined;
+        const profileName = resolveProfileName(args);
+        const explicitSelection = !!(args.p || args.profile || process.env.ZENDESK_PROFILE);
+        if (explicitSelection && !getRcConfig().profiles[profileName])
+          output.error(`Profile '${profileName}' not found. Run: zcli-ticket config-new ${profileName}`);
         const result = writeRcConfig(parsed.key, parsed.value, profileName);
         console.log(output.format(result));
         return true;
@@ -286,6 +287,53 @@ function handleSkillCommands(
   return true;
 }
 
+async function handleOauthLogin(
+  commandName: string,
+  command: AnyCommandSchema,
+  args: MinimistArgs,
+  output: Output
+): Promise<boolean> {
+  if (commandName !== 'oauth-login') return false;
+
+  try {
+    const parsed = parseCommand(command, splitArgs(args) as Record<string, string> & { _: string[] });
+    const config = loadOauthClientConfig(args);
+
+    if (!config.clientId || !config.clientSecret)
+      throw new Error(
+        'oauth-login requires OAuth client credentials. Run: ' +
+        'zcli-ticket config-set oauth-client-id <id> and zcli-ticket config-set oauth-client-secret <secret>'
+      );
+
+    const expiresIn = parsed['expires-in'];
+    if (expiresIn !== undefined && (expiresIn < 300 || expiresIn > 172800))
+      throw new Error(`--expires-in must be between 300 and 172800 seconds, received ${expiresIn}`);
+
+    const result = await exchangeClientCredentials({
+      subdomain: config.subdomain,
+      clientId: config.clientId,
+      clientSecret: config.clientSecret,
+      scope: parsed.scope || config.scope,
+      expiresIn: expiresIn ?? 172800,
+    });
+
+    const expiresAt = Math.floor(Date.now() / 1000) + result.expiresIn;
+    saveOauthToken(config.profile, { accessToken: result.accessToken, expiresAt, scopeGranted: result.scope });
+
+    console.log(output.format({
+      profile: config.profile,
+      scope: result.scope || '(default)',
+      expires_in: result.expiresIn,
+      expires_at: formatLocalTime(expiresAt),
+      token: maskSecret(result.accessToken),
+    }));
+  } catch (e) {
+    output.error(e instanceof Error ? e.message : String(e));
+  }
+
+  return true;
+}
+
 async function handleThreadCommand(
   commandName: string,
   command: AnyCommandSchema,
@@ -358,23 +406,35 @@ async function dispatchRequest(
   pathStr: string,
   cmdEntry: HelpEntry
 ): Promise<any> {
-  const queryFlags = extractQueryFlags(args, cmdEntry);
   const transformed = command.transformRequest ? command.transformRequest(parsed) : parsed;
 
   if (command.list) {
-    const queryParams = { ...queryFlags, ...filterQueryParams(transformed) };
+    const queryParams = queryParamsFor(command, command.api.method, args, cmdEntry, transformed);
     return client.list(command.api.method, pathStr, queryParams);
   }
 
   const method = command.api.method;
   const isBodyMethod = method !== 'GET' && method !== 'DELETE';
-  const queryParams = isBodyMethod
-    ? queryFlags
-    : { ...queryFlags, ...filterQueryParams(transformed) };
+  const queryParams = queryParamsFor(command, method, args, cmdEntry, transformed);
   const apiOptions: Record<string, any> = { queryParams };
   if (isBodyMethod)
     apiOptions.body = transformed;
   return client.request(method, pathStr, apiOptions);
+}
+
+export function queryParamsFor(
+  command: AnyCommandSchema,
+  method: string,
+  args: MinimistArgs,
+  cmdEntry: HelpEntry,
+  transformed: Record<string, any>
+): Record<string, any> {
+  if (method !== 'GET' && method !== 'DELETE')
+    return {};
+  const queryFlags = extractQueryFlags(args, cmdEntry);
+  if (!command.transformRequest)
+    return queryFlags;
+  return { ...queryFlags, ...filterQueryParams(transformed) };
 }
 
 function splitArgs(args: MinimistArgs): MinimistArgs {
@@ -392,7 +452,7 @@ function extractQueryFlags(args: MinimistArgs, cmdEntry: HelpEntry): Record<stri
   for (const key of Object.keys(args)) {
     if (key === '_' || globalOptions.includes(key)) continue;
     if (cmdFlags.includes(key))
-      params[key] = args[key];
+      params[key.replace(/-/g, '_')] = args[key];
   }
   return params;
 }

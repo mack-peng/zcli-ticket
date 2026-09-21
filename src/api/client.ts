@@ -18,7 +18,7 @@ function generateIdempotencyKey(): string {
   return `${prefix}-${random}-${idempotencyCounter}`;
 }
 
-function resolveBaseUrl(subdomain: string): string {
+export function resolveBaseUrl(subdomain: string): string {
   if (subdomain.includes('://'))
     return subdomain;
   if (subdomain.includes('.'))
@@ -37,13 +37,13 @@ export class ZendeskClient {
     this.defaultTimeout = defaultTimeout;
   }
 
-  async request(method: string, path: string, options: RequestOptions = {}): Promise<any> {
+  async request(method: string, path: string, options: RequestOptions = {}, retried = false): Promise<any> {
     const query = buildQueryString(options.queryParams);
     const url = this.baseUrl + path + query;
 
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      ...this.auth.getHeaders(),
+      ...(await this.auth.getHeaders()),
     };
 
     if (method === 'POST' || method === 'PUT')
@@ -66,6 +66,11 @@ export class ZendeskClient {
         return this.request(method, path, options);
       }
 
+      if (response.status === 401 && !retried && this.auth.refresh) {
+        await this.auth.refresh();
+        return this.request(method, path, options, true);
+      }
+
       const json: any = await response.json().catch(() => ({}));
 
       if (!response.ok) {
@@ -83,7 +88,7 @@ export class ZendeskClient {
     }
   }
 
-  async upload(filePath: string, filename?: string, tokenOnly = false): Promise<any> {
+  async upload(filePath: string, filename?: string, tokenOnly = false, retried = false): Promise<any> {
     const resolvedPath = path.isAbsolute(filePath) ? filePath : path.join(process.cwd(), filePath);
     const fileBuffer = fs.readFileSync(resolvedPath);
     const blob = new Blob([fileBuffer]);
@@ -100,7 +105,7 @@ export class ZendeskClient {
     formData.append('uploaded_data', blob, uploadName);
 
     const headers: Record<string, string> = {
-      ...this.auth.getHeaders(),
+      ...(await this.auth.getHeaders()),
     };
 
     const controller = new AbortController();
@@ -113,6 +118,11 @@ export class ZendeskClient {
         body: formData,
         signal: controller.signal,
       });
+
+      if (response.status === 401 && !retried && this.auth.refresh) {
+        await this.auth.refresh();
+        return this.upload(filePath, filename, tokenOnly, true);
+      }
 
       const json: any = await response.json().catch(() => ({}));
 

@@ -2,7 +2,7 @@
  * zcli-ticket Agent Skill templates.
  *
  * Installed into agent-specific skill directories via `zcli-ticket skill-install`.
- * Teaches agents how to use zcli-ticket's 78+ Zendesk CLI commands through
+ * Teaches agents how to use zcli-ticket's 81+ Zendesk CLI commands through
  * self-discovery (--help), auth configuration, output modes, and high-frequency
  * workflows.
  */
@@ -38,19 +38,28 @@ zcli-ticket config-set email <agent@company.com>
 zcli-ticket config-set token <api-token>          # API token mode (recommended)
 \`\`\`
 
+OAuth with auto refresh (no expiry babysitting):
+
+\`\`\`bash
+zcli-ticket config-set oauth-client-id <client-id>
+zcli-ticket config-set oauth-client-secret <client-secret>
+zcli-ticket oauth-login                          # exchange now, stores token + expiry
+\`\`\`
+
 Config is stored in \`~/.zendeskrc\`. Verify with \`zcli-ticket config-show\`.
 
 Override per-command when needed:
 \`zcli-ticket --subdomain co2 --email me@co.com --token abc ticket-list --status open\`
 
-Three auth modes: \`token\` (API token, recommended), \`password\` (basic auth),
-\`oauth-token\` (Bearer).
+Auth modes: \`token\` (API token, recommended), \`password\` (basic auth),
+\`oauth\` (Bearer; either a static \`oauth-token\`, or \`oauth-client-id\` +
+\`oauth-client-secret\` for automatic client_credentials refresh).
 
 Multiple profiles: \`zcli-ticket config-new staging\` → \`zcli-ticket -p staging config-set ...\`
 
 ## Command Discovery
 
-Do NOT memorize 78+ commands. Use:
+Do NOT memorize 81+ commands. Use:
 
 \`\`\`bash
 zcli-ticket --help                    # all commands grouped by category
@@ -179,18 +188,31 @@ export function buildPitfallsMd(): string {
 ## Auth & Config
 
 - Config file location: \`~/.zendeskrc\` (JSON). Use \`config-path\` to confirm.
-- Three auth modes: \`api-token\` (recommended, \`{email}/token:{token}\` base64),
-  \`basic\` (\`{email}:{password}\` base64), \`oauth\` (Bearer token).
-- CLI flags override env vars override config file.
+- Auth modes: \`api-token\` (recommended, \`{email}/token:{token}\` base64),
+  \`basic\` (\`{email}:{password}\` base64), \`oauth\` (Bearer token; refreshed
+  automatically when \`oauth-client-id\` / \`oauth-client-secret\` are set).
+- OAuth auto refresh is silent by default: tokens within 60s of expiry are
+  re-exchanged before the request, and an HTTP 401 triggers one refresh +
+  retry. Use \`--verbose\` to log refreshes to stderr.
+- Auth mode is inferred from credentials (OAuth wins when OAuth credentials
+  exist). Pin it with \`config-set mode <api-token|basic|oauth>\` or \`--mode\`
+  when a profile carries more than one credential type.
+- OAuth clients must be confidential (Admin Center -> Client kind); public
+  clients fail with \`unauthorized_client\`.
+- CLI flags override the config file (\`~/.zendeskrc\`). Credentials must be
+  configured first (\`config-set\` or per-command flags) — there are no
+  credential environment variables. \`ZENDESK_PROFILE\` only selects the
+  profile for a process (same as \`-p\`).
 - Config commands (\`config-set\`, \`config-show\`, etc.) are local file
-  operations — they never hit Zendesk API.
-- \`config-show\` masks secrets: only shows first 4 and last 2 characters of
-  tokens.
+  operations — they never hit Zendesk API (\`oauth-login\` is the exception:
+  it exchanges client credentials for a token).
+- \`config-show\` masks secrets (token/client secret) and shows OAuth token
+  expiry when known.
 
 ## Command Naming Convention
 
 - Flat naming: \`<resource>-<action>\` (e.g. ticket-list, user-search, comment-create).
-- All 78+ commands support \`--json\` for machine-readable output.
+- All 81+ commands support \`--json\` for machine-readable output.
 - Most list-type commands have \`list: true\` which enables automatic cursor
   pagination (traverses all pages, merges results).
 

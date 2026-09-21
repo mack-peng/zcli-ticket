@@ -964,8 +964,19 @@ const configSet = declareCommand({
   category: 'config',
   description: 'Set a configuration value',
   args: z.object({
-    key: z.string().describe('Config key (subdomain, email, token, password, oauth-token)'),
+    key: z.string().describe('Config key (subdomain, email, token, password, oauth-token, oauth-client-id, oauth-client-secret, oauth-scope)'),
     value: z.string().describe('Config value'),
+  }),
+  api: { method: 'GET', path: '' },
+});
+
+const oauthLogin = declareCommand({
+  name: 'oauth-login',
+  category: 'config',
+  description: 'Exchange OAuth client credentials for an access token and store it',
+  options: z.object({
+    scope: z.string().optional().describe('space-separated OAuth scopes (defaults to oauth-scope config)'),
+    'expires-in': numberArg.optional().describe('requested token lifetime in seconds (300-172800, default 172800)'),
   }),
   api: { method: 'GET', path: '' },
 });
@@ -1071,7 +1082,7 @@ const commandsArray: AnyCommandSchema[] = [
   suspendedList, suspendedRecover, suspendedDelete,
   incrementalTickets,
   // config
-  configShow, configSet, configPath, configList, configUse, configNew,
+  configShow, configSet, configPath, configList, configUse, configNew, oauthLogin,
   skillInstall, skillUninstall,
 ];
 
